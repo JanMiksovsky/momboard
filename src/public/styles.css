@@ -1,0 +1,55 @@
+/* @font-face {
+  font-family: 'Architects Daughter';
+  src: url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+  font-display: block;
+  font-style: normal;
+  font-weight: 400;
+} */
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=block');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  display: grid;
+  font-display: block;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 36px;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body > * {
+  padding: 1em;
+}
+
+/* body.heads > :nth-child(1),
+body.tails > :nth-child(2),
+body.tails > :nth-child(3),
+body.heads > :nth-child(4) {
+  background: black;
+  color: white;
+} */
+
+body.tails {
+  background: black;
+  color: white;
+}
+
+.message {
+  font-family: 'Architects Daughter', cursive;
+  margin: 0;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1em;
+}

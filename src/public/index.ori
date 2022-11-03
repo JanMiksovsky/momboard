@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ title }}</title>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      iframe {
+        border: none;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script>
+      window.addEventListener("load", () => {
+        // const interval = 5 * 60 * 1000; // 5 minutes
+        // const interval = 5 * 1000; // 5 seconds
+        const interval = 0; // No refresh
+        const frame = document.querySelector("iframe");
+        if (interval) {
+          setInterval(() => {
+            frame.contentWindow.location.reload();
+          }, interval);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <iframe src="board.html"></iframe>
+  </body>
+</html>

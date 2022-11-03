@@ -1,0 +1,13 @@
+---
+coin = coinToss():
+---
+{{#page.ori}}
+{{#map shuffle(data.yaml) }}
+    <div class="tile">
+      <div class="name">{{ name }}</div>
+      <p class="message">
+        {{ message }}
+      </p>
+    </div>
+{{/map}}
+{{/page.ori}}
