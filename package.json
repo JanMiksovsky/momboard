@@ -1,0 +1,11 @@
+{
+  "name": "momboard",
+  "type": "module",
+  "dependencies": {
+    "@graphorigami/origami": "github:GraphOrigami/origami#c55197de"
+  },
+  "scripts": {
+    "build": "ori copy virtual/src/public, files/dist",
+    "start": "ori serve watch virtual/src/public"
+  }
+}
