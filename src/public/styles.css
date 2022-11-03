@@ -24,6 +24,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  --small-font-size: 24px;
 }
 
 body > * {
@@ -38,18 +39,32 @@ body.heads > :nth-child(4) {
   color: white;
 } */
 
-body.tails {
+/* body.tails {
   background: black;
   color: white;
+} */
+
+.tile {
+  display: grid;
+  align-content: center;
 }
 
 .message {
   font-family: 'Architects Daughter', cursive;
+  font-size: larger;
   margin: 0;
 }
 
-.name {
-  font-size: 24px;
-  font-weight: bold;
+.heading {
+  font-size: var(--small-font-size);
   margin-bottom: 1em;
+}
+
+.dateBlock {
+  font-size: 48px;
+}
+
+.weekday {
+  font-size: larger;
+  font-weight: bold;
 }

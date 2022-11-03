@@ -2,12 +2,9 @@
 coin = coinToss():
 ---
 {{#page.ori}}
-{{#map shuffle(data.yaml) }}
+{{#map shuffle(updates) }}
     <div class="tile">
-      <div class="name">{{ name }}</div>
-      <p class="message">
-        {{ message }}
-      </p>
+{{ if(equals(@key, 'date'), today.ori(today()), message.ori(@value)) }}
     </div>
 {{/map}}
 {{/page.ori}}

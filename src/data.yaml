@@ -1,8 +1,11 @@
-- name: Jan
-  message: Happy Birthday, Mom!
-- name: Chris
-  message: See you soon!
-- name: Skye
-  message: I’ll call you this afternoon
-- name:
-  message:
+updates:
+  Jan:
+    message: Happy Birthday, Mom!
+    spoke: 2022-11-01 4:37 pm PDT
+  Chris:
+    message: See you soon!
+    spoke: 2022-11-02 7:53 pm PDT
+  Skye:
+    message: I’ll call you this afternoon
+    spoke: 2022-11-03 8:06 am PDT
+  date:

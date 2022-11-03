@@ -1,0 +1,15 @@
+      <div class="heading">
+        <span class="name">
+          From
+          <strong>{{ @key }}</strong>
+        </span>
+        {{#if spoke}}
+        <span class="spoke">
+          — last spoke with
+          <strong>{{ timeAgo(spoke) }}</strong>
+        </span>
+        {{/if}}
+      </div>
+      <p class="message">
+        {{ message }}
+      </p>

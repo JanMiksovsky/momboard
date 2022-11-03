@@ -1,3 +1,6 @@
-title: MomBoard™️
+title: MomBoard
 index.html = index.ori():
 board.html = board.ori():
+
+edit = meta(this):
+  index.html = edit.ori():
