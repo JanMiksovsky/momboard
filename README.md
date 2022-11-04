@@ -1,0 +1,3 @@
+- Manage data at https://app.jsonstorage.net
+- To work on index page, add `?noReload` to URL to suppress reload and refresh.
+- To work on board page, add `?noRefresh` to URL to suppress refresh.

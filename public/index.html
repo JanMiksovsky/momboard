@@ -22,9 +22,10 @@
       }
     </style>
     <script>
-      const refreshInterval = 5 * 60 * 1000; // 5 minutes
+      const refreshInterval = 60 * 60 * 1000; // 1 hour
       // const refreshInterval = 10 * 1000; // 10 seconds
       // const refreshInterval = 0; // No refresh
+      const noReload = location.search.slice(1) === "noReload";
 
       function logNextReload() {
         const now = new Date();
@@ -33,8 +34,13 @@
       }
 
       window.addEventListener("load", () => {
+        let boardPath = "board.html";
         const frame = document.querySelector("iframe");
-        if (refreshInterval) {
+        if (noReload) {
+          boardPath += "?noRefresh";
+        }
+        frame.src = boardPath;
+        if (!noReload) {
           logNextReload();
           setInterval(() => {
             frame.contentWindow.location.reload();
@@ -45,6 +51,6 @@
     </script>
   </head>
   <body>
-    <iframe src="board.html"></iframe>
+    <iframe></iframe>
   </body>
 </html>
