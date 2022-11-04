@@ -6,7 +6,6 @@ const writeUrl = `${readUrl}?apiKey=c449f192-4472-4f53-9cde-aa542d5994a8`;
 let nameSelect;
 let messageTextarea;
 let spokeInput;
-let saveSuccess;
 
 let state = {
   dirty: false,
@@ -38,6 +37,15 @@ async function load() {
   }
 }
 
+function navigateToBoard() {
+  const path = location.pathname;
+  const parts = path.split("/");
+  parts.pop(); // Remove trailing empty string
+  parts.pop(); // Remove name of this page
+  const boardPath = parts.join("/");
+  location.href = boardPath;
+}
+
 function render(state, changed) {
   const { dirty, saving, selectedName, showFeedback, updates } = state;
 
@@ -63,7 +71,6 @@ function render(state, changed) {
 
   saveButton.disabled = saving || !dirty;
   saveButton.textContent = saving ? "Saving..." : "Save";
-  saveSuccess.style.display = showFeedback ? "inherit" : "none";
 }
 
 async function save() {
@@ -79,6 +86,7 @@ async function save() {
   });
   const responseBody = await response.json();
   setState({ dirty: false, saving: false, showFeedback: !!responseBody });
+  navigateToBoard();
 }
 
 function setState(changed) {
@@ -90,7 +98,6 @@ window.addEventListener("load", async () => {
   nameSelect = document.getElementById("nameSelect");
   messageTextarea = document.getElementById("messageTextarea");
   spokeInput = document.getElementById("spokeInput");
-  saveSuccess = document.getElementById("saveSuccess");
   const saveButton = document.getElementById("saveButton");
 
   nameSelect.addEventListener("change", () => {
