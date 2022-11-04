@@ -95,10 +95,14 @@
         }
       }
 
+      // dateText is in yyyy-mm-dd format
       function timeAgo(dateText) {
         if (!dateText) {
           return "";
         }
+
+        // Convert from yyyy-mm-dd format to yyyy/mm/dd format.
+        dateText = dateText.replaceAll("-", "/");
 
         const ianaTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const offsetInMinutes = timeZoneOffsetInMinutes(ianaTimeZone);
