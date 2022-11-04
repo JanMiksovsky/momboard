@@ -10,11 +10,46 @@
     <script src="edit.js" type="module"></script>
     <style>
       body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 16px;
+        font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 20px;
         margin: 0;
         max-width: 500px;
         padding: 1em;
+      }
+
+      h1 {
+        font-size: larger;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font-size: inherit;
+      }
+
+      header {
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr auto;
+      }
+
+      header a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      #formGrid {
+        align-items: center;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-gap: 0.5em;
+        margin: 0.5em 0;
+      }
+
+      .columnSpan {
+        grid-column: 1 / span 2;
       }
 
       #messageTextarea {
@@ -25,10 +60,10 @@
 
       #saveButton {
         padding: 0.5em;
-        width: 100px;
+        width: 6em;
       }
 
-      #errorMessage {
+      .feedback {
         border: 1px solid orange;
         background: #fff6e5;
         display: none;
@@ -47,18 +82,20 @@
     </style>
   </head>
   <body>
-    <p>
-      Name:
+    <header>
+      <h1>MomBoard</h1>
+      <a href="../board.html">View board</a>
+    </header>
+    <div id="formGrid">
+      <label for="nameSelect">Name:</label>
       <select id="nameSelect"></select>
-    </p>
-    Message:
-    <br />
-    <textarea id="messageTextarea" rows="4"></textarea>
-    <p>
-      Last spoke:
+      <label for="messageTextarea" class="columnSpan">Message:</label>
+      <textarea id="messageTextarea" rows="4" class="columnSpan"></textarea>
+      <label for="spokeInput">Last spoke:</label>
       <input type="date" id="spokeInput" />
-    </p>
-    <button id="saveButton">Save</button>
-    <p id="errorMessage">Couldn't access the server.</p>
+      <button id="saveButton">Save</button>
+    </div>
+    <p id="saveMessage" class="feedback">Changes saved</p>
+    <p id="errorMessage" class="feedback">Couldn't access the server</p>
   </body>
 </html>

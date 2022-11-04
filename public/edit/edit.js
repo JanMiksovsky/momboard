@@ -6,6 +6,7 @@ const initialState = {
   dirty: false,
   selectedName: location.hash.slice(1), // Will be empty string if no hash
   saving: false,
+  saveSuccessful: false,
   error: false,
 };
 
@@ -47,7 +48,7 @@ function navigateToBoard() {
 }
 
 function render(state, changed) {
-  const { dirty, error, saving, selectedName, updates } = state;
+  const { dirty, error, saveSuccessful, saving, selectedName, updates } = state;
 
   const names = updates ? Object.keys(updates) : [];
   if (changed.updates) {
@@ -79,13 +80,20 @@ function render(state, changed) {
     saveButton.textContent = saving ? "Saving..." : "Save";
   }
 
+  if (changed.saveSuccessful) {
+    saveMessage.style.display = saveSuccessful ? "block" : "none";
+  }
   if (changed.error) {
-    errorMessage.style.display = error ? "inherit" : "none";
+    errorMessage.style.display = error ? "block" : "none";
   }
 }
 
 async function save() {
-  setState({ saving: true });
+  setState({
+    error: false,
+    saveSuccessful: false,
+    saving: true,
+  });
   const postData = fieldsToData();
   const body = JSON.stringify(postData);
   const data = await dataFetch({
@@ -99,9 +107,10 @@ async function save() {
     setState({
       dirty: false,
       error: false,
+      saveSuccessful: true,
       saving: false,
     });
-    navigateToBoard();
+    // navigateToBoard();
   } else {
     setState({
       error: true,
@@ -123,10 +132,10 @@ window.addEventListener("load", async () => {
     });
   });
   messageTextarea.addEventListener("input", () => {
-    setState({ dirty: true, showFeedback: false });
+    setState({ dirty: true, saveSuccessful: false });
   });
   spokeInput.addEventListener("input", () => {
-    setState({ dirty: true, showFeedback: false });
+    setState({ dirty: true, saveSuccessful: false });
   });
   saveButton.addEventListener("click", async () => {
     await save();
