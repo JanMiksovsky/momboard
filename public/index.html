@@ -22,15 +22,24 @@
       }
     </style>
     <script>
+      const refreshInterval = 5 * 60 * 1000; // 5 minutes
+      // const refreshInterval = 10 * 1000; // 10 seconds
+      // const refreshInterval = 0; // No refresh
+
+      function logNextReload() {
+        const now = new Date();
+        nextReload = new Date(now.getTime() + refreshInterval);
+        console.log(`Next reload: ${nextReload}`);
+      }
+
       window.addEventListener("load", () => {
-        // const interval = 5 * 60 * 1000; // 5 minutes
-        const interval = 10 * 1000; // 10 seconds
-        // const interval = 0; // No refresh
         const frame = document.querySelector("iframe");
-        if (interval) {
+        if (refreshInterval) {
+          logNextReload();
           setInterval(() => {
             frame.contentWindow.location.reload();
-          }, interval);
+            logNextReload();
+          }, refreshInterval);
         }
       });
     </script>

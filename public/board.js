@@ -1,32 +1,44 @@
+import updateState from "./updateState.js";
+
 const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
 const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
 const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
+
+const refreshInterval = 10 * 1000; // 10 seconds
+
+let state = {
+  updates: null,
+};
 
 async function refresh() {
   const response = await fetch(readUrl);
   const data = await response.json();
   if (data) {
-    render(data);
+    const { updates } = data;
+    setState({ updates });
   }
 }
 
-function render(state) {
-  const { updates } = state;
-  const keys = Object.keys(updates);
-  // Add a marker for the today tile show it gets shuffled in.
-  const todayMarker = Symbol();
-  keys.push(todayMarker);
-  shuffle(keys);
+function render(state, changed) {
+  if (changed.updates) {
+    const { updates } = state;
 
-  const tiles = keys.map((key) =>
-    key === todayMarker
-      ? renderTodayTile()
-      : renderMessageTile(key, updates[key])
-  );
+    const keys = Object.keys(updates);
+    // Add a marker for the today tile show it gets shuffled in.
+    const todayMarker = Symbol();
+    keys.push(todayMarker);
+    shuffle(keys);
 
-  const html = tiles.join("\n");
+    const tiles = keys.map((key) =>
+      key === todayMarker
+        ? renderTodayTile()
+        : renderMessageTile(key, updates[key])
+    );
 
-  document.body.innerHTML = html;
+    const html = tiles.join("\n");
+
+    document.body.innerHTML = html;
+  }
 }
 
 function renderMessageTile(name, data) {
@@ -72,6 +84,12 @@ function renderTodayTile() {
     <div class="monthDay">${month} ${day}</div>
   </div>
 </div>`;
+}
+
+function setState(changes) {
+  const { newState, changed } = updateState(state, changes);
+  state = newState;
+  render(state, changed);
 }
 
 /*
@@ -152,3 +170,5 @@ function timeZoneOffsetInMinutes(ianaTimeZone) {
 window.addEventListener("load", async () => {
   await refresh();
 });
+
+window.refresh = refresh;
