@@ -24,6 +24,7 @@
       }
 
       .tile {
+        align-content: center;
         display: grid;
         min-height: 0;
         padding: 4vmin;
@@ -59,8 +60,12 @@
         --character-width: calc(var(--length) / var(--width-scaling));
         --length: 12; /* longest text is "September 10" */
         --width-scaling: 1.2;
+        align-content: center;
+        display: grid;
         font-size: calc(75vmin / var(--character-width));
+        justify-content: center;
         margin: 0;
+        text-align: center;
       }
 
       .weekday {

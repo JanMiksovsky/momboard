@@ -68,7 +68,6 @@ function renderTodayTile() {
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
   return `<div class="tile">
   <div class="dateBlock">
-    <div class="todayIs">Today is</div>
     <div class="weekday">${weekday}</div>
     <div class="monthDay">${month} ${day}</div>
   </div>
