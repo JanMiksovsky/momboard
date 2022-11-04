@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MomBoard — Edit</title>
     <link rel="stylesheet" href="../styles.css" />
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        margin: 0;
+        max-width: 500px;
+        padding: 1em;
+      }
+
+      #messageTextarea {
+        font-family: "Architects Daughter", cursive;
+        font-size: 24px;
+        width: 100%;
+      }
+
+      #saveButton {
+        padding: 0.5em;
+        width: 100px;
+      }
+
+      .feedback {
+        border: 1px solid orange;
+        background: #fff6e5;
+        display: none;
+        padding: 0.5em;
+      }
+
+      #boardLink {
+        color: inherit;
+      }
+
+      @media (min-width: 600px) {
+        body {
+          padding: 2em;
+        }
+      }
+    </style>
     <script>
       const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
       const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
@@ -14,6 +51,7 @@
       let nameSelect;
       let messageTextarea;
       let spokeInput;
+      let saveSuccess;
 
       // Local representation of the stored data
       let updates;
@@ -65,13 +103,21 @@
         messageTextarea.value = personUpdates?.message ?? "";
         spokeInput.value = personUpdates?.spoke ?? "";
         location.hash = name;
+        setDirty(false);
+      }
+
+      function setDirty(dirty) {
+        saveButton.disabled = !dirty;
+        if (dirty) {
+          saveSuccess.style.display = "none";
+        }
       }
 
       async function save() {
-        console.log("Saving…");
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving…";
         const data = fieldsToData();
         const body = JSON.stringify(data);
-        console.log(data);
         const response = await fetch(writeUrl, {
           method: "PATCH",
           headers: {
@@ -80,17 +126,32 @@
           body,
         });
         const responseBody = await response.json();
-        console.log(responseBody);
+        if (responseBody) {
+          showFeedback();
+        }
+        saveButton.textContent = "Save";
+        setDirty(false);
+      }
+
+      function showFeedback() {
+        saveSuccess.style.display = "inherit";
       }
 
       window.addEventListener("load", async () => {
         nameSelect = document.getElementById("nameSelect");
         messageTextarea = document.getElementById("messageTextarea");
         spokeInput = document.getElementById("spokeInput");
+        saveSuccess = document.getElementById("saveFeedback");
         const saveButton = document.getElementById("saveButton");
 
         nameSelect.addEventListener("change", () => {
           nameSelectChanged();
+        });
+        messageTextarea.addEventListener("input", () => {
+          setDirty(true);
+        });
+        spokeInput.addEventListener("input", () => {
+          setDirty(true);
         });
         saveButton.addEventListener("click", async () => {
           await save();
@@ -101,14 +162,21 @@
     </script>
   </head>
   <body>
-    <div>
+    <p>
       Name:
       <select id="nameSelect"></select>
-      Message:
-      <textarea id="messageTextarea"></textarea>
+    </p>
+    Message:
+    <br />
+    <textarea id="messageTextarea" rows="4"></textarea>
+    <p>
       Last spoke:
       <input type="date" id="spokeInput" />
-      <button id="saveButton">Save</button>
-    </div>
+    </p>
+    <button id="saveButton" disabled>Save</button>
+    <p id="saveSuccess" class="feedback">
+      Changes saved.
+      <a id="boardLink" href="..">View board</a>
+    </p>
   </body>
 </html>

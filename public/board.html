@@ -5,6 +5,59 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MomBoard</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        display: grid;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 36px;
+        grid-template: 1fr 1fr / 1fr 1fr;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        --small-font-size: 24px;
+      }
+
+      body > * {
+        padding: 1em;
+      }
+
+      .splash {
+        align-content: center;
+        display: grid;
+        grid-column: 1 / span 2;
+        grid-row: 1 / span 2;
+        justify-content: center;
+      }
+
+      .tile {
+        display: grid;
+        align-content: center;
+      }
+
+      .message {
+        font-family: "Architects Daughter", cursive;
+        font-size: larger;
+        margin: 0;
+      }
+
+      .heading {
+        font-size: var(--small-font-size);
+        margin-bottom: 1em;
+      }
+
+      .dateBlock {
+        font-size: 48px;
+      }
+
+      .weekday {
+        font-size: larger;
+        font-weight: bold;
+      }
+    </style>
     <script>
       const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
       const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
@@ -159,6 +212,6 @@
     </script>
   </head>
   <body>
-    <div>Please wait…</div>
+    <div class="splash">MomBoard</div>
   </body>
 </html>
