@@ -1,11 +1,10 @@
-/* @font-face {
-  font-family: 'Architects Daughter';
-  src: url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+@font-face {
   font-display: block;
+  font-family: 'Architects Daughter';
   font-style: normal;
   font-weight: 400;
-} */
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=block');
+  src: url("assets/ArchitectsDaughter-Regular.ttf");
+}
 
 * {
   box-sizing: border-box;
