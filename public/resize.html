@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: "Architects Daughter", cursive;
+        margin: 0;
+        padding: 0;
+        --grid-columns: 2;
+      }
+
+      div {
+        font-size: calc((100vw / var(--grid-columns)) / (var(--length) / 1.8));
+      }
+    </style>
+    <script type="module">
+      // The aspect ratio of a lowercase "x" in the Architects Daughter font,
+      // where the height is the `font-size` in px (and not the measured height)
+      // of the letter.
+      const xAspect = 0.470703125;
+
+      function refresh() {
+        const textLength = text.textContent.length;
+        text.style.setProperty("--length", textLength);
+      }
+
+      window.addEventListener("load", refresh);
+      window.addEventListener("resize", refresh);
+    </script>
+  </head>
+  <body>
+    <div id="text">The quick brown fox jumps over the lazy dog.</div>
+  </body>
+</html>

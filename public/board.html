@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MomBoard</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="board.js" type="module"></script>
     <style>
       html {
         height: 100%;
@@ -14,35 +15,52 @@
         display: grid;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 36px;
-        grid-template: 1fr 1fr / 1fr 1fr;
+        grid-template: 1fr 1fr / repeat(var(--grid-columns), 1fr);
         height: 100%;
         margin: 0;
         padding: 0;
-        --small-font-size: 24px;
-      }
-
-      body > * {
-        padding: 1em;
+        --grid-columns: 2;
+        --column-width: calc(100vw / var(--grid-columns));
       }
 
       .tile {
         display: grid;
-        align-content: center;
+        min-height: 0;
+        padding: 4vmin;
       }
 
       .message {
         font-family: "Architects Daughter", cursive;
-        font-size: larger;
+        font-size: calc(min(var(--desired-font-size), var(--max-font-size)));
+        line-height: 1.1;
         margin: 0;
+        overflow: auto;
+        --character-width: calc(
+          var(--characters-per-line) / var(--width-scaling)
+        );
+        --length: 1000; /* Text defaults to microscopic size. */
+        --lines: 1; /* Default */
+        --characters-per-line: calc(max(var(--length) / var(--max-lines), 20));
+        --desired-font-size: calc(var(--column-width) / var(--character-width));
+        --max-font-size: 30vh / var(--lines);
+        --max-lines: 4;
+        --width-scaling: 1.8;
       }
 
       .heading {
-        font-size: var(--small-font-size);
-        margin-bottom: 1em;
+        --character-width: calc(var(--length) / var(--width-scaling));
+        --length: 40; /* Rough guess for heading length */
+        --width-scaling: 1.5;
+        font-size: calc(var(--column-width) / var(--character-width));
+        margin-bottom: 2vmin;
       }
 
       .dateBlock {
-        font-size: 48px;
+        --character-width: calc(var(--length) / var(--width-scaling));
+        --length: 12; /* longest text is "September 10" */
+        --width-scaling: 1.2;
+        font-size: calc(75vmin / var(--character-width));
+        margin: 0;
       }
 
       .weekday {
@@ -50,158 +68,6 @@
         font-weight: bold;
       }
     </style>
-    <script>
-      const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
-      const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
-      const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
-
-      async function load() {
-        const response = await fetch(readUrl);
-        const data = await response.json();
-        if (data) {
-          const { updates } = data;
-          renderUpdates(updates);
-          console.log(updates);
-        }
-      }
-
-      function renderMessageTile(name, data) {
-        const message = data?.message ?? "";
-        const spoke = data?.spoke;
-        const spokeSpan = spoke
-          ? `<span class="spoke">
-  — last spoke with
-  <strong>${timeAgo(spoke)}</strong>
-</span>`
-          : "";
-
-        return `<div class="tile">
-  <div class="heading">
-      <span class="name">
-        From
-        <strong>${name}</strong>
-      </span>
-      ${spokeSpan}
-    </div>
-    <p class="message">
-      ${message}
-    </p>
-  </div>
-</div>`;
-      }
-
-      function renderUpdates(updates) {
-        const keys = Object.keys(updates);
-        shuffle(keys);
-
-        const tiles = keys.map((key) =>
-          key === "date"
-            ? renderTodayTile()
-            : renderMessageTile(key, updates[key])
-        );
-
-        const html = tiles.join("\n");
-
-        document.body.innerHTML = html;
-      }
-
-      function renderTodayTile() {
-        const now = new Date();
-        const weekday = new Intl.DateTimeFormat("en-US", {
-          weekday: "long",
-        }).format(now);
-        const month = new Intl.DateTimeFormat("en-US", {
-          month: "long",
-        }).format(now);
-        const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(
-          now
-        );
-        return `<div class="tile">
-  <div class="dateBlock">
-    <div class="todayIs">Today is</div>
-    <div class="weekday">${weekday}</div>
-    <div class="monthDay">${month} ${day}</div>
-  </div>
-</div>`;
-      }
-
-      /*
-       * Shuffle an array.
-       *
-       * Performs a Fisher-Yates shuffle. From http://sedition.com/perl/javascript-fy.html
-       */
-      function shuffle(array) {
-        var i = array.length;
-        while (--i >= 0) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
-        }
-      }
-
-      // dateText is in yyyy-mm-dd format
-      function timeAgo(dateText) {
-        if (!dateText) {
-          return "";
-        }
-
-        // Convert from yyyy-mm-dd format to yyyy/mm/dd format.
-        dateText = dateText.replaceAll("-", "/");
-
-        const ianaTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const offsetInMinutes = timeZoneOffsetInMinutes(ianaTimeZone);
-        const offsetInHours = offsetInMinutes / 60;
-        const sign = offsetInHours > 0 ? "+" : "";
-        const dateTextWithTimeZone = `${dateText} GMT${sign}${offsetInHours}`;
-
-        const date = new Date(Date.parse(dateTextWithTimeZone));
-        const now = new Date();
-        const midnightToday = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-
-        let daysAgo;
-        const days = Math.floor((midnightToday - date) / (1000 * 60 * 60 * 24));
-        if (days <= 0) {
-          daysAgo = "today";
-        } else if (days === 1) {
-          daysAgo = "yesterday";
-        } else {
-          daysAgo = days + " days ago";
-        }
-
-        return daysAgo;
-      }
-
-      // From https://stackoverflow.com/a/69014377/76472
-      function timeZoneOffsetInMinutes(ianaTimeZone) {
-        const now = new Date();
-        now.setSeconds(0, 0);
-
-        // Format current time in `ianaTimeZone` as `M/DD/YYYY, HH:MM:SS`:
-        const tzDateString = now.toLocaleString("en-US", {
-          timeZone: ianaTimeZone,
-          hourCycle: "h23",
-        });
-
-        // Parse formatted date string:
-        const match = /(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/.exec(tzDateString);
-        const [_, month, day, year, hour, min] = match.map(Number);
-
-        // Change date string's time zone to UTC and get timestamp:
-        const tzTime = Date.UTC(year, month - 1, day, hour, min);
-
-        // Return the offset between UTC and target time zone:
-        return Math.floor((tzTime - now.getTime()) / (1000 * 60));
-      }
-
-      window.addEventListener("load", async () => {
-        await load();
-      });
-    </script>
   </head>
   <body></body>
 </html>

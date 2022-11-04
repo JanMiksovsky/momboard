@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MomBoard — Edit</title>
     <link rel="stylesheet" href="../styles.css" />
+    <script src="edit.js" type="module"></script>
     <style>
       body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -42,124 +43,6 @@
         }
       }
     </style>
-    <script>
-      const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
-      const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
-      const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
-      const writeUrl = `${readUrl}?apiKey=c449f192-4472-4f53-9cde-aa542d5994a8`;
-
-      let nameSelect;
-      let messageTextarea;
-      let spokeInput;
-      let saveSuccess;
-
-      // Local representation of the stored data
-      let updates;
-
-      function dataToFields() {
-        const names = Object.keys(updates).filter((name) => name !== "date");
-        nameSelect.innerHTML = "";
-        for (const name of names) {
-          const option = document.createElement("option");
-          option.value = name;
-          option.innerText = name;
-          nameSelect.appendChild(option);
-        }
-
-        const hash = location.hash;
-        nameSelect.value = hash ? hash.slice(1) : names[0];
-
-        nameSelectChanged();
-      }
-
-      function fieldsToData() {
-        const name = nameSelect.value;
-        const message = messageTextarea.value;
-        const date = spokeInput.value;
-        const spoke = spokeInput.value;
-        return {
-          updates: {
-            [name]: {
-              message,
-              spoke,
-            },
-          },
-        };
-      }
-
-      async function load() {
-        const response = await fetch(readUrl);
-        const data = await response.json();
-        if (data) {
-          updates = data.updates;
-        }
-        dataToFields();
-        console.log(updates);
-      }
-
-      function nameSelectChanged() {
-        const name = nameSelect.value;
-        const personUpdates = updates[name];
-        messageTextarea.value = personUpdates?.message ?? "";
-        spokeInput.value = personUpdates?.spoke ?? "";
-        location.hash = name;
-        setDirty(false);
-      }
-
-      function setDirty(dirty) {
-        saveButton.disabled = !dirty;
-        if (dirty) {
-          saveSuccess.style.display = "none";
-        }
-      }
-
-      async function save() {
-        saveButton.disabled = true;
-        saveButton.textContent = "Saving…";
-        const data = fieldsToData();
-        const body = JSON.stringify(data);
-        const response = await fetch(writeUrl, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body,
-        });
-        const responseBody = await response.json();
-        if (responseBody) {
-          showFeedback();
-        }
-        saveButton.textContent = "Save";
-        setDirty(false);
-      }
-
-      function showFeedback() {
-        saveSuccess.style.display = "inherit";
-      }
-
-      window.addEventListener("load", async () => {
-        nameSelect = document.getElementById("nameSelect");
-        messageTextarea = document.getElementById("messageTextarea");
-        spokeInput = document.getElementById("spokeInput");
-        saveSuccess = document.getElementById("saveFeedback");
-        const saveButton = document.getElementById("saveButton");
-
-        nameSelect.addEventListener("change", () => {
-          nameSelectChanged();
-        });
-        messageTextarea.addEventListener("input", () => {
-          setDirty(true);
-        });
-        spokeInput.addEventListener("input", () => {
-          setDirty(true);
-        });
-        saveButton.addEventListener("click", async () => {
-          await save();
-        });
-
-        await load();
-      });
-    </script>
   </head>
   <body>
     <p>
