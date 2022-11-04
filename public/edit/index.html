@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>MomBoard — Edit</title>
+    <title>MomBoard</title>
     <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../MomBoard.png" />
+    <link rel="apple-touch-icon" href="../MomBoard.png" sizes="512x512" />
     <script src="edit.js" type="module"></script>
     <style>
       body {
@@ -26,7 +28,7 @@
         width: 100px;
       }
 
-      .feedback {
+      #errorMessage {
         border: 1px solid orange;
         background: #fff6e5;
         display: none;
@@ -56,6 +58,7 @@
       Last spoke:
       <input type="date" id="spokeInput" />
     </p>
-    <button id="saveButton" disabled>Save</button>
+    <button id="saveButton">Save</button>
+    <p id="errorMessage">Couldn't access the server.</p>
   </body>
 </html>

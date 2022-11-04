@@ -1,10 +1,7 @@
+import dataFetch from "./dataFetch.js";
 import updateState from "./updateState.js";
 
-const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
-const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
-const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
-
-const refreshInterval = 60 * 1000; // 60 seconds
+const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
@@ -12,21 +9,28 @@ let state = {
 };
 
 async function refresh() {
-  const response = await fetch(readUrl);
-  const data = await response.json();
+  const data = await dataFetch();
   if (data) {
     const { updates } = data;
-    setState({ updates });
-  }
-  if (!noRefresh) {
-    console.log(`Next refresh: ${new Date(Date.now() + refreshInterval)}`);
-    setTimeout(refresh, refreshInterval);
+    setState({
+      error: false,
+      updates,
+    });
+    if (!noRefresh) {
+      console.log(`Next refresh: ${new Date(Date.now() + refreshInterval)}`);
+      setTimeout(refresh, refreshInterval);
+    }
+  } else {
+    setState({
+      error: true,
+      updates: {},
+    });
   }
 }
 
 function render(state, changed) {
   if (changed.updates) {
-    const { updates } = state;
+    const { error, updates } = state;
 
     const keys = Object.keys(updates);
     // Add a marker for the today tile show it gets shuffled in.
@@ -36,7 +40,7 @@ function render(state, changed) {
 
     const tiles = keys.map((key) =>
       key === todayMarker
-        ? renderTodayTile()
+        ? renderTodayTile(error)
         : renderMessageTile(key, updates[key])
     );
 
@@ -58,7 +62,6 @@ function renderMessageTile(name, data) {
   <strong>${spokeAgo}</strong>
 </span>`
     : "";
-
   return `<div class="tile">
   <div class="heading">
     <span class="name">
@@ -74,7 +77,7 @@ function renderMessageTile(name, data) {
 </div>`;
 }
 
-function renderTodayTile() {
+function renderTodayTile(error) {
   const now = new Date();
   const weekday = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -83,7 +86,8 @@ function renderTodayTile() {
     month: "long",
   }).format(now);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
-  return `<div class="tile">
+  const tileClass = `tile${error ? " span" : ""}`;
+  return `<div class="${tileClass}">
   <div class="dateBlock">
     <div class="weekday">${weekday}</div>
     <div class="monthDay">${month} ${day}</div>

@@ -1,19 +1,12 @@
+import dataFetch from "../dataFetch.js";
 import updateState from "../updateState.js";
 
-const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
-const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
-const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
-const writeUrl = `${readUrl}?apiKey=c449f192-4472-4f53-9cde-aa542d5994a8`;
-
-let nameSelect;
-let messageTextarea;
-let spokeInput;
-
-let state = {
+let state = {};
+const initialState = {
   dirty: false,
   selectedName: location.hash.slice(1), // Will be empty string if no hash
   saving: false,
-  showFeedback: false,
+  error: false,
 };
 
 function fieldsToData() {
@@ -31,11 +24,15 @@ function fieldsToData() {
 }
 
 async function load() {
-  const response = await fetch(readUrl);
-  const data = await response.json();
+  const data = await dataFetch();
   if (data) {
     const { updates } = data;
-    setState({ updates });
+    setState({
+      error: false,
+      updates,
+    });
+  } else {
+    setState({ error: true });
   }
 }
 
@@ -50,7 +47,7 @@ function navigateToBoard() {
 }
 
 function render(state, changed) {
-  const { dirty, saving, selectedName, showFeedback, updates } = state;
+  const { dirty, error, saving, selectedName, updates } = state;
 
   const names = updates ? Object.keys(updates) : [];
   if (changed.updates) {
@@ -61,35 +58,56 @@ function render(state, changed) {
     nameSelect.innerHTML = nameOptions.join("\n");
   }
 
+  const disableControls = names.length === 0;
+  nameSelect.disabled = disableControls;
+  messageTextarea.disabled = disableControls;
+  spokeInput.disabled = disableControls;
+
   if (changed.updates || changed.selectedName) {
     const name = selectedName || names[0];
     if (name) {
       nameSelect.value = name;
       location.hash = name;
-      const personUpdates = updates[name];
+      const personUpdates = updates?.[name];
       messageTextarea.value = personUpdates?.message ?? "";
       spokeInput.value = personUpdates?.spoke ?? "";
     }
   }
 
-  saveButton.disabled = saving || !dirty;
-  saveButton.textContent = saving ? "Saving..." : "Save";
+  if (disableControls || changed.dirty || changed.saving) {
+    saveButton.disabled = disableControls || saving || !dirty;
+    saveButton.textContent = saving ? "Saving..." : "Save";
+  }
+
+  if (changed.error) {
+    errorMessage.style.display = error ? "inherit" : "none";
+  }
 }
 
 async function save() {
   setState({ saving: true });
-  const data = fieldsToData();
-  const body = JSON.stringify(data);
-  const response = await fetch(writeUrl, {
+  const postData = fieldsToData();
+  const body = JSON.stringify(postData);
+  const data = await dataFetch({
     method: "PATCH",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
     },
     body,
   });
-  const responseBody = await response.json();
-  setState({ dirty: false, saving: false, showFeedback: !!responseBody });
-  navigateToBoard();
+  if (data) {
+    setState({
+      dirty: false,
+      error: false,
+      saving: false,
+    });
+    navigateToBoard();
+  } else {
+    setState({
+      error: true,
+      saving: false,
+    });
+  }
 }
 
 function setState(changes) {
@@ -99,11 +117,6 @@ function setState(changes) {
 }
 
 window.addEventListener("load", async () => {
-  nameSelect = document.getElementById("nameSelect");
-  messageTextarea = document.getElementById("messageTextarea");
-  spokeInput = document.getElementById("spokeInput");
-  const saveButton = document.getElementById("saveButton");
-
   nameSelect.addEventListener("change", () => {
     setState({
       selectedName: nameSelect.value,
@@ -119,5 +132,6 @@ window.addEventListener("load", async () => {
     await save();
   });
 
+  setState(initialState);
   await load();
 });
