@@ -40,9 +40,10 @@ async function load() {
 function navigateToBoard() {
   const path = location.pathname;
   const parts = path.split("/");
-  parts.pop(); // Remove trailing empty string
-  parts.pop(); // Remove name of this page
-  const boardPath = parts.join("/");
+  parts.pop(); // Remove trailing empty string.
+  parts.pop(); // Remove name of this page.
+  // Navigate to path, or root if path is now empty.
+  const boardPath = parts.join("/") || "/";
   location.href = boardPath;
 }
 
