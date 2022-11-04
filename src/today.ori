@@ -1,5 +1,0 @@
-      <div class="dateBlock">
-        <div class="todayIs">Today is</div>
-        <div class="weekday">{{ weekday }}</div>
-        <div class="monthDay">{{ month }} {{ day }}</div>
-      </div>

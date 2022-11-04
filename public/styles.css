@@ -17,7 +17,6 @@ html {
 
 body {
   display: grid;
-  font-display: block;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 36px;
   grid-template: 1fr 1fr / 1fr 1fr;
@@ -30,19 +29,6 @@ body {
 body > * {
   padding: 1em;
 }
-
-/* body.heads > :nth-child(1),
-body.tails > :nth-child(2),
-body.tails > :nth-child(3),
-body.heads > :nth-child(4) {
-  background: black;
-  color: white;
-} */
-
-/* body.tails {
-  background: black;
-  color: white;
-} */
 
 .tile {
   display: grid;
