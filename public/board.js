@@ -4,7 +4,7 @@ const userId = "65fbe32d-bf35-47de-a27f-e86724613a7b";
 const itemId = "2bd8b583-d812-4a08-a54b-063fe6732bc5";
 const readUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}`;
 
-const refreshInterval = 10 * 1000; // 10 seconds
+const refreshInterval = 60 * 1000; // 60 seconds
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
