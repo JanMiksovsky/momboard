@@ -4,6 +4,9 @@ const apiKey = "c449f192-4472-4f53-9cde-aa542d5994a8";
 const storageUrl = `https://api.jsonstorage.net/v1/json/${userId}/${itemId}?apiKey=${apiKey}`;
 
 export default async function dataFetch(options = {}) {
+  if (!navigator.onLine) {
+    return null;
+  }
   try {
     const response = await fetch(storageUrl, options);
     if (!response.ok) {
