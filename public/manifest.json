@@ -1,5 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "name": "MomBoard",
-  "display": "fullscreen"
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "MomBoard.jpg"
+    }
+  ]
 }
