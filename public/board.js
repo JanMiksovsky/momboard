@@ -33,10 +33,12 @@ function render(state, changed) {
     const { error, updates } = state;
 
     const keys = Object.keys(updates);
-    // Add a marker for the today tile show it gets shuffled in.
-    const todayMarker = Symbol();
-    keys.push(todayMarker);
     shuffle(keys);
+
+    // Insert a marker for the today tile in position 0 or 1.
+    const todayMarker = Symbol();
+    const todayIndex = Math.floor(Math.random() * 2);
+    keys.splice(todayIndex, 0, todayMarker);
 
     const tiles = keys.map((key) =>
       key === todayMarker
@@ -57,22 +59,18 @@ function renderMessageTile(name, data) {
   const spoke = data?.spoke;
   const spokeAgo = timeAgo(spoke);
   const spokeSpan = spokeAgo
-    ? `<span class="spoke">
-  — last spoke with
-  <strong>${spokeAgo}</strong>
-</span>`
+    ? `<span class="spoke">(last spoke with <strong>${spokeAgo}</strong>)</span>`
     : "";
   return `<div class="tile">
-  <div class="heading">
-    <span class="name">
-      From
-      <strong>${name}</strong>
-    </span>
-    ${spokeSpan}
-  </div>
     <p class="message" style="--length: ${length}; --lines: ${lines}">
       ${message}
     </p>
+    <div class="heading">
+    <span class="name">
+      —<strong>${name}</strong>
+    </span>
+    ${spokeSpan}
+  </div>
   </div>
 </div>`;
 }

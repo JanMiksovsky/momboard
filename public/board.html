@@ -14,6 +14,7 @@
 
       body {
         display: grid;
+        filter: grayscale(1);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 36px;
         grid-template: 1fr 1fr / repeat(var(--grid-columns), 1fr);
@@ -56,10 +57,11 @@
 
       .heading {
         --character-width: calc(var(--length) / var(--width-scaling));
-        --length: 40; /* Rough guess for heading length */
+        --length: 32; /* Rough guess for heading length */
         --width-scaling: 1.5;
         font-size: calc(var(--column-width) / var(--character-width));
-        margin-bottom: 2vmin;
+        margin-top: 3vmin;
+        text-align: right;
       }
 
       .dateBlock {
