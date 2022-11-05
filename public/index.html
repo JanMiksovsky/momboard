@@ -28,30 +28,51 @@
       // const refreshInterval = 10 * 1000; // 10 seconds
       const noReload = location.search.slice(1) === "noReload";
 
+      let boardPath = "board.html";
+      if (noReload) {
+        boardPath += "?noRefresh";
+      }
+
       function logNextReload() {
         const now = new Date();
         nextReload = new Date(now.getTime() + refreshInterval);
         console.log(`Next reload: ${nextReload}`);
       }
 
-      window.addEventListener("load", () => {
-        let boardPath = "board.html";
-        const frame = document.querySelector("iframe");
-        if (noReload) {
-          boardPath += "?noRefresh";
+      async function reloadFrame() {
+        // Step 1: make sure we're online.
+        if (!navigator.onLine) {
+          return;
         }
+        // Step 2: make sure we can still reach the board page.
+        let ok;
+        try {
+          const response = await fetch(boardPath, {
+            cache: "reload",
+          });
+          ok = response.ok;
+        } catch (error) {
+          ok = false;
+        }
+        if (ok) {
+          // Page is still live, reload the frame.
+          frame.contentWindow.location.reload();
+        }
+      }
+
+      window.addEventListener("load", () => {
         frame.src = boardPath;
         if (!noReload) {
           logNextReload();
-          setInterval(() => {
-            frame.contentWindow.location.reload();
+          setInterval(async () => {
             logNextReload();
+            await reloadFrame();
           }, refreshInterval);
         }
       });
     </script>
   </head>
   <body>
-    <iframe></iframe>
+    <iframe id="frame"></iframe>
   </body>
 </html>
