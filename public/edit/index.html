@@ -10,7 +10,6 @@
     <script src="edit.js" type="module"></script>
     <style>
       body {
-        filter: grayscale(1);
         font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
           "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         font-size: 20px;
@@ -36,8 +35,8 @@
         grid-template-columns: 1fr auto;
       }
 
-      header a {
-        color: inherit;
+      a {
+        color: #007aff;
         text-decoration: none;
       }
 
@@ -54,6 +53,7 @@
       }
 
       #messageTextarea {
+        filter: grayscale(1);
         font-family: "Architects Daughter", cursive;
         font-size: 24px;
         width: 100%;
