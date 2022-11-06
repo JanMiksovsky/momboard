@@ -24,8 +24,6 @@
       }
     </style>
     <script>
-      const refreshInterval = 60 * 60 * 1000; // 1 hour
-      // const refreshInterval = 10 * 1000; // 10 seconds
       const noReload = location.search.slice(1) === "noReload";
 
       let boardPath = "board.html";
@@ -33,10 +31,24 @@
         boardPath += "?noRefresh";
       }
 
-      function logNextReload() {
+      // Reload the frame at the top of the next hour.
+      function queueNextReload() {
         const now = new Date();
-        nextReload = new Date(now.getTime() + refreshInterval);
-        console.log(`Next reload: ${nextReload}`);
+        const hourFromNow = new Date(now.valueOf() + 60 * 60 * 1000);
+        const topOfNextHour = new Date(
+          hourFromNow.getFullYear(),
+          hourFromNow.getMonth(),
+          hourFromNow.getDate(),
+          hourFromNow.getHours()
+        );
+        const millisecondsToNextHour = topOfNextHour - now;
+
+        setTimeout(async () => {
+          await reloadFrame();
+          queueNextReload();
+        }, millisecondsToNextHour);
+
+        console.log(`Next reload: ${topOfNextHour}`);
       }
 
       async function reloadFrame() {
@@ -63,11 +75,7 @@
       window.addEventListener("load", () => {
         frame.src = boardPath;
         if (!noReload) {
-          logNextReload();
-          setInterval(async () => {
-            logNextReload();
-            await reloadFrame();
-          }, refreshInterval);
+          queueNextReload();
         }
       });
     </script>
