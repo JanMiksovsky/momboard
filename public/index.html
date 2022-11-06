@@ -43,9 +43,9 @@
         );
         const millisecondsToNextHour = topOfNextHour - now;
 
-        setTimeout(async () => {
-          await reloadFrame();
+        setTimeout(() => {
           queueNextReload();
+          reloadFrame(); // Don't wait for the reload to finish.
         }, millisecondsToNextHour);
 
         console.log(`Next reload: ${topOfNextHour}`);
