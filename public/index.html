@@ -33,15 +33,15 @@
 
       // Reload the frame at the top of the next hour.
       function queueNextReload() {
-        const now = new Date();
-        const hourFromNow = new Date(now.valueOf() + 60 * 60 * 1000);
+        const now = Date.now();
+        const hourFromNow = new Date(now + 60 * 60 * 1000);
         const topOfNextHour = new Date(
           hourFromNow.getFullYear(),
           hourFromNow.getMonth(),
           hourFromNow.getDate(),
           hourFromNow.getHours()
         );
-        const millisecondsToNextHour = topOfNextHour - now;
+        const millisecondsToNextHour = topOfNextHour.valueOf() - now;
 
         setTimeout(() => {
           queueNextReload();
