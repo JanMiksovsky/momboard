@@ -59,7 +59,7 @@ function renderMessageTile(name, data) {
     </max-font-size>
     <div class="heading">
     <span class="name">
-      —<strong>${name}</strong>
+      <strong>${name}</strong>
     </span>
     ${spokeSpan}
   </div>

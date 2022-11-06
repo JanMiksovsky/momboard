@@ -37,7 +37,7 @@ class MaxFontSize extends HTMLElement {
       this.style.fontSize = `${fontSize}vmax`;
       // Seems like we need to wait a tick for the font size to take effect.
       await new Promise((resolve) => setTimeout(resolve));
-      const height = this.container.clientHeight;
+      const height = this.container.scrollHeight;
       const width = this.container.clientWidth;
       fits = height <= clientHeight && width <= clientWidth;
       if (fits) {
