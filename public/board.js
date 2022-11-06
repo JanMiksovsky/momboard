@@ -54,17 +54,15 @@ function render(state, changed) {
 
 function renderMessageTile(name, data) {
   const message = data?.message ?? "";
-  const length = message.length;
-  const lines = Math.ceil(length / 24);
   const spoke = data?.spoke;
   const spokeAgo = timeAgo(spoke);
   const spokeSpan = spokeAgo
     ? `<span class="spoke">(last spoke with <strong>${spokeAgo}</strong>)</span>`
     : "";
   return `<div class="tile">
-    <p class="message" style="--length: ${length}; --lines: ${lines}">
+    <max-font-size class="message">
       ${message}
-    </p>
+    </max-font-size>
     <div class="heading">
     <span class="name">
       —<strong>${name}</strong>

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="MomBoard.png" />
     <script src="board.js" type="module"></script>
+    <script type="module" src="MaxFontSize.js"></script>
     <style>
       html {
         height: 100%;
@@ -28,6 +29,7 @@
       .tile {
         align-content: center;
         display: grid;
+        grid-template-rows: 1fr auto;
         min-height: 0;
         padding: 4vmin;
       }
@@ -39,20 +41,8 @@
 
       .message {
         font-family: "Architects Daughter", cursive;
-        font-size: calc(min(var(--desired-font-size), var(--max-font-size)));
         line-height: 1.1;
-        margin: 0;
-        overflow: hidden;
-        --character-width: calc(
-          var(--characters-per-line) / var(--width-scaling)
-        );
-        --length: 1000; /* Text defaults to microscopic size. */
-        --lines: 1; /* Default */
-        --characters-per-line: calc(max(var(--length) / var(--max-lines), 20));
-        --desired-font-size: calc(var(--column-width) / var(--character-width));
-        --max-font-size: 30vh / var(--lines);
-        --max-lines: 4;
-        --width-scaling: 1.8;
+        visibility: hidden; /* Will become visible after the first resize. */
       }
 
       .heading {
