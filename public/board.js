@@ -8,6 +8,8 @@ let state = {
   updates: null,
 };
 
+let timeout;
+
 async function refresh() {
   const data = await dataFetch();
   if (data) {
@@ -17,8 +19,11 @@ async function refresh() {
       updates,
     });
     if (!noRefresh) {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
       console.log(`Next refresh: ${new Date(Date.now() + refreshInterval)}`);
-      setTimeout(refresh, refreshInterval);
+      timeout = setTimeout(refresh, refreshInterval);
     }
   } else {
     setState({
@@ -171,6 +176,12 @@ function timeZoneOffsetInMinutes(ianaTimeZone) {
 }
 
 window.addEventListener("load", async () => {
+  await refresh();
+});
+window.addEventListener("focus", async () => {
+  await refresh();
+});
+window.addEventListener("online", async () => {
   await refresh();
 });
 

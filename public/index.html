@@ -26,6 +26,8 @@
     <script>
       const noReload = location.search.slice(1) === "noReload";
 
+      let timeout;
+
       let boardPath = "board.html";
       if (noReload) {
         boardPath += "?noRefresh";
@@ -33,6 +35,10 @@
 
       // Reload the frame at the top of the next hour.
       function queueNextReload() {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+
         const now = Date.now();
         const hourFromNow = new Date(now + 60 * 60 * 1000);
         const topOfNextHour = new Date(
@@ -43,7 +49,7 @@
         );
         const millisecondsToNextHour = topOfNextHour.valueOf() - now;
 
-        setTimeout(() => {
+        timeout = setTimeout(() => {
           queueNextReload();
           reloadFrame(); // Don't wait for the reload to finish.
         }, millisecondsToNextHour);
