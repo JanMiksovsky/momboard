@@ -32,8 +32,9 @@ function render(state, changed) {
   if (changed.updates) {
     const { error, updates } = state;
 
-    const keys = Object.keys(updates);
+    let keys = Object.keys(updates);
     shuffle(keys);
+    keys = keys.slice(0, 4);
     const tiles = keys.map((key) => renderMessageTile(key, updates[key]));
 
     // Add today banner at the top.
