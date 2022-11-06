@@ -18,10 +18,12 @@
         filter: grayscale(1);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 36px;
-        grid-template: 1fr 1fr / repeat(var(--grid-columns), 1fr);
+        gap: var(--gap) calc(2 * var(--gap));
+        grid-template: auto 1fr 1fr / repeat(var(--grid-columns), 1fr);
         height: 100%;
         margin: 0;
-        padding: 0;
+        padding: var(--gap);
+        --gap: 4vmin;
         --grid-columns: 2;
         --column-width: calc(100vw / var(--grid-columns));
       }
@@ -29,13 +31,21 @@
       .tile {
         align-content: center;
         display: grid;
+        gap: 3vh;
         grid-template-rows: 1fr auto;
         min-height: 0;
-        padding: 4vmin;
       }
 
-      .span {
+      .today {
+        display: block;
+        font-size: 4vh;
         grid-column: 1 / span 2;
+        justify-content: center;
+        margin: 0;
+        text-align: center;
+      }
+
+      .error {
         grid-row: 1 / span 2;
       }
 
@@ -50,24 +60,10 @@
         --length: 32; /* Rough guess for heading length */
         --width-scaling: 1.5;
         font-size: calc(var(--column-width) / var(--character-width));
-        margin-top: 3vmin;
         text-align: right;
       }
 
-      .dateBlock {
-        --character-width: calc(var(--length) / var(--width-scaling));
-        --length: 12; /* longest text is "September 10" */
-        --width-scaling: 1.2;
-        align-content: center;
-        display: grid;
-        font-size: calc(75vmin / var(--character-width));
-        justify-content: center;
-        margin: 0;
-        text-align: center;
-      }
-
       .weekday {
-        font-size: larger;
         font-weight: bold;
       }
     </style>

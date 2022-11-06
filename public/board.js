@@ -34,17 +34,11 @@ function render(state, changed) {
 
     const keys = Object.keys(updates);
     shuffle(keys);
+    const tiles = keys.map((key) => renderMessageTile(key, updates[key]));
 
-    // Insert a marker for the today tile in position 0 or 1.
-    const todayMarker = Symbol();
-    const todayIndex = Math.floor(Math.random() * 2);
-    keys.splice(todayIndex, 0, todayMarker);
-
-    const tiles = keys.map((key) =>
-      key === todayMarker
-        ? renderTodayTile(error)
-        : renderMessageTile(key, updates[key])
-    );
+    // Add today banner at the top.
+    const today = renderToday(error);
+    tiles.unshift(today);
 
     const html = tiles.join("\n");
 
@@ -73,7 +67,7 @@ function renderMessageTile(name, data) {
 </div>`;
 }
 
-function renderTodayTile(error) {
+function renderToday(error) {
   const now = new Date();
   const weekday = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -82,12 +76,11 @@ function renderTodayTile(error) {
     month: "long",
   }).format(now);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
-  const tileClass = `tile${error ? " span" : ""}`;
+  const tileClass = `today${error ? " error" : ""}`;
   return `<div class="${tileClass}">
-  <div class="dateBlock">
-    <div class="weekday">${weekday}</div>
-    <div class="monthDay">${month} ${day}</div>
-  </div>
+  MomBoard
+  &nbsp;&nbsp;<span class="weekday">${weekday}</span>&nbsp;&nbsp;
+  ${month} ${day}
 </div>`;
 }
 
