@@ -49,9 +49,9 @@
         );
         const millisecondsToNextHour = topOfNextHour.valueOf() - now;
 
-        timeout = setTimeout(() => {
+        timeout = setTimeout(async () => {
           queueNextReload();
-          reloadFrame(); // Don't wait for the reload to finish.
+          await reloadFrame();
         }, millisecondsToNextHour);
 
         console.log(`Next reload: ${topOfNextHour}`);
@@ -60,6 +60,7 @@
       async function reloadFrame() {
         // Step 1: make sure we're online.
         if (!navigator.onLine) {
+          console.error("Not online, skipping reload");
           return;
         }
         // Step 2: make sure we can still reach the board page.
@@ -69,8 +70,12 @@
             cache: "reload",
           });
           ok = response.ok;
+          if (!ok) {
+            console.error(`fetch error: ${response.status}`);
+          }
         } catch (error) {
           ok = false;
+          console.error(`Error checking board page: ${error.message}`);
         }
         if (ok) {
           // Page is still live, reload the frame.
