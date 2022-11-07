@@ -1,4 +1,5 @@
 const resizeObserver = new ResizeObserver(async (entries) => {
+  await document.fonts.ready;
   for (const entry of entries) {
     entry.target.resize();
   }
