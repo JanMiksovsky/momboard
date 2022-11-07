@@ -1,5 +1,7 @@
 const resizeObserver = new ResizeObserver(async (entries) => {
   await document.fonts.ready;
+  // Waiting a ticket seems to help, not sure why.
+  await new Promise((resolve) => setTimeout(resolve));
   for (const entry of entries) {
     entry.target.resize();
   }
