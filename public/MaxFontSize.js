@@ -27,6 +27,11 @@ class MaxFontSize extends HTMLElement {
   }
 
   async resize() {
+    if (this.resizing) {
+      return;
+    }
+
+    this.resizing = true;
     this.style.visibility = "hidden";
 
     const clientHeight = this.clientHeight;
@@ -34,6 +39,7 @@ class MaxFontSize extends HTMLElement {
 
     const minFontSize = 1;
     const maxFontSize = 10;
+
     let fontSize = maxFontSize;
     let fits = false;
     while (!fits && fontSize > minFontSize) {
@@ -50,6 +56,7 @@ class MaxFontSize extends HTMLElement {
     }
 
     this.style.visibility = "visible";
+    this.resizing = false;
   }
 }
 
