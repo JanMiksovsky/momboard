@@ -59,8 +59,7 @@ function renderMessageTile(name, data) {
   const spokeSpan = spokeAgo
     ? `<span class="spoke">
       <span class="downplay">(last spoke with</span>
-        <strong>${spokeAgo}</strong>
-      <span class="downplay">)</span>
+        <strong>${spokeAgo}</strong><span class="downplay">)</span>
     </span>`
     : "";
   return `<div class="tile">
@@ -87,8 +86,7 @@ function renderToday(error) {
   }).format(now);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
   const tileClass = `today${error ? " error" : ""}`;
-  return `<div class="${tileClass}">
-  <span class="downplay">MomBoard</span>
+  return `<div class="${tileClass}"><span class="downplay">MomBoard</span>
   &nbsp;&nbsp;<span class="weekday">${weekday}</span>&nbsp;&nbsp;
   <span class="downplay">${month} ${day}</span>
 </div>`;

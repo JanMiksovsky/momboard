@@ -27,19 +27,20 @@
         --grid-columns: 2;
         --column-width: calc(100vw / var(--grid-columns));
         --gray: #444;
+        --ui-text-size: 3.5vmax;
       }
 
       .tile {
         align-content: center;
         display: grid;
-        gap: 1vh;
+        gap: 2vmin;
         grid-template-rows: 1fr auto;
         min-height: 0;
       }
 
       .today {
         display: block;
-        font-size: 6vmin;
+        font-size: var(--ui-text-size);
         grid-column: 1 / span 2;
         justify-content: center;
         margin: 0;
@@ -52,7 +53,6 @@
 
       .message {
         font-family: "Architects Daughter", cursive;
-        /* line-height: 1.1; */
         visibility: hidden; /* Will become visible after the first resize. */
       }
 
@@ -66,10 +66,6 @@
 
       .weekday {
         font-weight: bold;
-      }
-
-      .downplay {
-        /* color: var(--gray); */
       }
     </style>
   </head>
