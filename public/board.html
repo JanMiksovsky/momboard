@@ -18,16 +18,45 @@
         filter: grayscale(1);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 36px;
-        gap: var(--gap) calc(2 * var(--gap));
-        grid-template: auto 1fr 1fr / repeat(var(--grid-columns), 1fr);
+        grid-template: auto 1fr / 1fr;
         height: 100%;
         margin: 0;
         padding: var(--gap);
+        row-gap: var(--gap);
         --gap: 5vmin;
         --grid-columns: 2;
         --column-width: calc(100vw / var(--grid-columns));
         --gray: #444;
         --ui-text-size: 3vmax;
+      }
+
+      .banner {
+        display: flex;
+        font-size: var(--ui-text-size);
+        gap: 0.5em;
+        grid-column: 1 / span 2;
+        justify-content: space-between;
+        margin: 0;
+      }
+
+      body.flip .banner {
+        flex-direction: row-reverse;
+      }
+
+      #date {
+        display: inline-flex;
+        gap: 0.5em;
+      }
+
+      body.flip #date {
+        flex-direction: row-reverse;
+      }
+
+      #tiles {
+        display: grid;
+        gap: var(--gap) calc(2 * var(--gap));
+        grid-template: 1fr 1fr / repeat(var(--grid-columns), 1fr);
+        min-height: 0;
       }
 
       .tile {
@@ -38,20 +67,6 @@
         min-height: 0;
       }
 
-      .today {
-        display: grid;
-        font-size: var(--ui-text-size);
-        grid-column: 1 / span 2;
-        grid-template-columns: auto 1fr auto;
-        justify-content: center;
-        margin: 0;
-        text-align: center;
-      }
-
-      .error {
-        grid-row: 1 / span 2;
-      }
-
       .message {
         font-family: "Architects Daughter", cursive;
         visibility: hidden; /* Will become visible after the first resize. */
@@ -60,15 +75,32 @@
       .heading {
         --character-width: calc(var(--length) / var(--width-scaling));
         --length: 32; /* Rough guess for heading length */
-        --width-scaling: 1.5;
+        --width-scaling: 1.6;
         font-size: calc(var(--column-width) / var(--character-width));
         text-align: right;
       }
 
-      .weekday {
+      body.flip .heading {
+        text-align: left;
+      }
+
+      #weekday {
         font-weight: bold;
       }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div class="banner">
+      <span>MomBoard</span>
+      <span id="date">
+        <span id="weekday"></span>
+        <span id="monthDay">
+          <span id="month"></span>
+          <span id="day"></span>
+        </span>
+      </span>
+      <span id="time"></span>
+    </div>
+    <div id="tiles"></div>
+  </body>
 </html>

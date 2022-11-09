@@ -37,23 +37,27 @@ async function refresh() {
 function render(state, changed) {
   if (changed.updates) {
     const { error, updates } = state;
-
     let keys = Object.keys(updates);
     shuffle(keys);
     keys = keys.slice(0, 4);
-    const tiles = keys.map((key) => renderMessageTile(key, updates[key]));
-
-    // Add today banner at the top.
-    const today = renderToday(error);
-    tiles.unshift(today);
-
-    const html = tiles.join("\n");
-
-    document.body.innerHTML = html;
+    const tileFragments = keys.map((key) =>
+      renderMessageTile(key, updates[key])
+    );
+    tiles.innerHTML = tileFragments.join("\n");
   }
 
   if (changed.now) {
-    now.textContent = new Date(state.now).toLocaleTimeString();
+    const now = state.now;
+    weekday.textContent = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(now);
+    month.textContent = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+    }).format(now);
+    day.textContent = new Intl.DateTimeFormat("en-US", {
+      day: "numeric",
+    }).format(now);
+    time.textContent = now.toLocaleTimeString();
   }
 }
 
@@ -78,26 +82,6 @@ function renderMessageTile(name, data) {
     ${spokeSpan}
   </div>
   </div>
-</div>`;
-}
-
-function renderToday(error) {
-  const now = new Date();
-  const weekday = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-  }).format(now);
-  const month = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-  }).format(now);
-  const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
-  const tileClass = `today${error ? " error" : ""}`;
-  return `<div class="${tileClass}">
-  <span>MomBoard</span>
-  <span>
-    <span class="weekday">${weekday}</span>
-    <span>${month} ${day}</span>
-  </span>
-  <span id="now"></span>
 </div>`;
 }
 
@@ -186,7 +170,7 @@ window.addEventListener("load", async () => {
   // Start the clock
   setInterval(() => {
     setState({
-      now: Date.now(),
+      now: new Date(),
     });
   }, 1000);
 
