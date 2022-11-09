@@ -27,7 +27,7 @@
         --grid-columns: 2;
         --column-width: calc(100vw / var(--grid-columns));
         --gray: #444;
-        --ui-text-size: 3.5vmax;
+        --ui-text-size: 3vmax;
       }
 
       .tile {
@@ -39,9 +39,10 @@
       }
 
       .today {
-        display: block;
+        display: grid;
         font-size: var(--ui-text-size);
         grid-column: 1 / span 2;
+        grid-template-columns: auto 1fr auto;
         justify-content: center;
         margin: 0;
         text-align: center;

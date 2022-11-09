@@ -5,10 +5,11 @@ const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
+  now: null,
   updates: null,
 };
 
-let timeout;
+let refreshTimeout;
 
 async function refresh() {
   const data = await dataFetch();
@@ -19,11 +20,11 @@ async function refresh() {
       updates,
     });
     if (!noRefresh) {
-      if (timeout) {
-        clearTimeout(timeout);
+      if (refreshTimeout) {
+        clearTimeout(refreshTimeout);
       }
       console.log(`Next refresh: ${new Date(Date.now() + refreshInterval)}`);
-      timeout = setTimeout(refresh, refreshInterval);
+      refreshTimeout = setTimeout(refresh, refreshInterval);
     }
   } else {
     setState({
@@ -49,6 +50,10 @@ function render(state, changed) {
     const html = tiles.join("\n");
 
     document.body.innerHTML = html;
+  }
+
+  if (changed.now) {
+    now.textContent = new Date(state.now).toLocaleTimeString();
   }
 }
 
@@ -86,9 +91,13 @@ function renderToday(error) {
   }).format(now);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(now);
   const tileClass = `today${error ? " error" : ""}`;
-  return `<div class="${tileClass}"><span class="downplay">MomBoard</span>
-  &nbsp;&nbsp;<span class="weekday">${weekday}</span>&nbsp;&nbsp;
-  <span class="downplay">${month} ${day}</span>
+  return `<div class="${tileClass}">
+  <span>MomBoard</span>
+  <span>
+    <span class="weekday">${weekday}</span>
+    <span>${month} ${day}</span>
+  </span>
+  <span id="now"></span>
 </div>`;
 }
 
@@ -174,6 +183,13 @@ function timeZoneOffsetInMinutes(ianaTimeZone) {
 }
 
 window.addEventListener("load", async () => {
+  // Start the clock
+  setInterval(() => {
+    setState({
+      now: Date.now(),
+    });
+  }, 1000);
+
   await refresh();
 });
 window.addEventListener("focus", async () => {
