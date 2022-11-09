@@ -5,6 +5,7 @@ const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
+  flip: false,
   now: null,
   updates: null,
 };
@@ -35,15 +36,8 @@ async function refresh() {
 }
 
 function render(state, changed) {
-  if (changed.updates) {
-    const { error, updates } = state;
-    let keys = Object.keys(updates);
-    shuffle(keys);
-    keys = keys.slice(0, 4);
-    const tileFragments = keys.map((key) =>
-      renderMessageTile(key, updates[key])
-    );
-    tiles.innerHTML = tileFragments.join("\n");
+  if (changed.flip) {
+    document.body.classList.toggle("flip", state.flip);
   }
 
   if (changed.now) {
@@ -58,6 +52,21 @@ function render(state, changed) {
       day: "numeric",
     }).format(now);
     time.textContent = now.toLocaleTimeString();
+  }
+
+  if (changed.updates) {
+    if (state.updates) {
+      const { error, updates } = state;
+      let keys = Object.keys(updates);
+      shuffle(keys);
+      keys = keys.slice(0, 4);
+      const tileFragments = keys.map((key) =>
+        renderMessageTile(key, updates[key])
+      );
+      tiles.innerHTML = tileFragments.join("\n");
+    } else {
+      tiles.innerHTML = "";
+    }
   }
 }
 
@@ -166,13 +175,24 @@ function timeZoneOffsetInMinutes(ianaTimeZone) {
   return Math.floor((tzTime - now.getTime()) / (1000 * 60));
 }
 
+function updateClock() {
+  setState({
+    now: new Date(),
+  });
+}
+
 window.addEventListener("load", async () => {
   // Start the clock
   setInterval(() => {
-    setState({
-      now: new Date(),
-    });
+    updateClock();
   }, 1000);
+
+  updateClock();
+
+  // If the current hour is even, flip the orientation of various elements.
+  setState({
+    flip: state.now.getHours() % 2 === 1,
+  });
 
   await refresh();
 });
@@ -184,3 +204,4 @@ window.addEventListener("online", async () => {
 });
 
 window.refresh = refresh;
+window.setState = setState;
