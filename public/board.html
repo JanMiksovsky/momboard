@@ -27,12 +27,11 @@
         --grid-columns: 2;
         --column-width: calc(100vw / var(--grid-columns));
         --gray: #444;
-        --ui-text-size: 3vmax;
       }
 
       .banner {
         display: flex;
-        font-size: var(--ui-text-size);
+        font-size: calc(min(3.5vw, 4vh));
         gap: 0.5em;
         grid-column: 1 / span 2;
         justify-content: space-between;
@@ -76,8 +75,8 @@
 
       .heading {
         --character-width: calc(var(--length) / var(--width-scaling));
-        --length: 32; /* Rough guess for heading length */
-        --width-scaling: 1.6;
+        --length: 30; /* Rough guess for heading length */
+        --width-scaling: 1.7;
         font-size: calc(var(--column-width) / var(--character-width));
         text-align: right;
       }

@@ -76,8 +76,7 @@ function renderMessageTile(name, data) {
   const spokeAgo = timeAgo(spoke);
   const spokeSpan = spokeAgo
     ? `<span class="spoke">
-      <span class="downplay">(last spoke with</span>
-        <strong>${spokeAgo}</strong><span class="downplay">)</span>
+      (spoke with <strong>${spokeAgo}</strong>)
     </span>`
     : "";
   return `<div class="tile">
@@ -191,7 +190,7 @@ window.addEventListener("load", async () => {
 
   // If the current hour is even, flip the orientation of various elements.
   setState({
-    flip: state.now.getHours() % 2 === 1,
+    flip: state.now.getHours() % 2 === 0,
   });
 
   await refresh();
