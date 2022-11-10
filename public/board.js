@@ -5,8 +5,9 @@ const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
-  flip: false,
+  flip: null,
   now: null,
+  online: null,
   updates: null,
 };
 
@@ -52,6 +53,10 @@ function render(state, changed) {
       day: "numeric",
     }).format(now);
     time.textContent = now.toLocaleTimeString();
+  }
+
+  if (changed.online) {
+    title.textContent = state.online ? "MomBoard" : "⊘ Offline";
   }
 
   if (changed.updates) {
@@ -191,6 +196,7 @@ window.addEventListener("load", async () => {
   // If the current hour is even, flip the orientation of various elements.
   setState({
     flip: state.now.getHours() % 2 === 0,
+    online: navigator.onLine,
   });
 
   await refresh();
@@ -198,7 +204,15 @@ window.addEventListener("load", async () => {
 window.addEventListener("focus", async () => {
   await refresh();
 });
+window.addEventListener("offline", () => {
+  setState({
+    online: false,
+  });
+});
 window.addEventListener("online", async () => {
+  setState({
+    online: true,
+  });
   await refresh();
 });
 
