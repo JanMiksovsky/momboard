@@ -5,6 +5,7 @@ const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
 
 let state = {
+  error: null,
   flip: null,
   now: null,
   online: null,
@@ -29,8 +30,10 @@ async function refresh() {
       refreshTimeout = setTimeout(refresh, refreshInterval);
     }
   } else {
+    // If we didn't get data and we're online, an error occurred.
+    const error = state.online;
     setState({
-      error: true,
+      error,
       updates: {},
     });
   }
@@ -55,8 +58,12 @@ function render(state, changed) {
     time.textContent = now.toLocaleTimeString();
   }
 
-  if (changed.online) {
-    title.textContent = state.online ? "MomBoard" : "⊘ Offline";
+  if (changed.online || changed.error) {
+    title.textContent = state.error
+      ? "⚠ No Data"
+      : state.online
+      ? "MomBoard"
+      : "⊘ Offline";
   }
 
   if (changed.updates) {
@@ -194,8 +201,10 @@ window.addEventListener("load", async () => {
   updateClock();
 
   // If the current hour is even, flip the orientation of various elements.
+  const flip = state.now.getHours() % 2 === 0;
   setState({
-    flip: state.now.getHours() % 2 === 0,
+    error: false,
+    flip,
     online: navigator.onLine,
   });
 
