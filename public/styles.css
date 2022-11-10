@@ -6,6 +6,22 @@
   src: url("assets/ArchitectsDaughter-Regular.ttf");
 }
 
+@font-face {
+  font-display: block;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/OpenSans-Regular.ttf");
+}
+
+@font-face {
+  font-display: block;
+  font-family: "Open Sans";
+  font-style: bold;
+  font-weight: 700;
+  src: url("assets/OpenSans-Bold.ttf");
+}
+
 * {
   box-sizing: border-box;
 }
