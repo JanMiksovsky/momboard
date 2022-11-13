@@ -14,9 +14,12 @@
       }
 
       body {
+        --column-width: calc(100vw / var(--grid-columns));
+        --gap: 5vmin;
+        --gray: #444;
+        --grid-columns: 2;
         display: grid;
         filter: grayscale(1);
-        /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 36px;
         grid-template: auto 1fr / 1fr;
@@ -24,10 +27,7 @@
         margin: 0;
         padding: var(--gap);
         row-gap: var(--gap);
-        --gap: 5vmin;
-        --grid-columns: 2;
-        --column-width: calc(100vw / var(--grid-columns));
-        --gray: #444;
+        user-select: none;
       }
 
       .banner {
@@ -68,7 +68,8 @@
       }
 
       .message {
-        font-family: "Architects Daughter", cursive;
+        font-family: "Architects Daughter", "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
         font-weight: bold; /* Fake bold, but maybe easier to read */
         letter-spacing: 1px;
         visibility: hidden; /* Will become visible after the first resize. */
