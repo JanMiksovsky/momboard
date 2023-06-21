@@ -102,7 +102,7 @@ function renderMessageTile(name, data) {
       (spoke with <strong>${spokeAgo}</strong>)
     </span>`
     : "";
-  return `<div class="tile">
+  return `<div class="tile messageTile">
     <max-font-size class="message">
       ${message}
     </max-font-size>
@@ -118,10 +118,9 @@ function renderMessageTile(name, data) {
 
 function renderNotesTile(data) {
   const notes = formatNotes(data?.message ?? "");
-  return `<div class="tile">
-    <max-font-size class="notes">
-      ${notes}
-    </max-font-size>
+  return `<div class="tile notesTile">
+  <div class="notes">
+    ${notes}
   </div>
 </div>`;
 }

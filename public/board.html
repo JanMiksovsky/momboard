@@ -60,11 +60,14 @@
       }
 
       .tile {
-        align-content: center;
         display: grid;
+        min-height: 0;
+      }
+
+      .messageTile {
+        align-content: center;
         gap: 2vmin;
         grid-template-rows: 1fr auto;
-        min-height: 0;
       }
 
       .message {
@@ -83,7 +86,8 @@
         text-align: right;
       }
 
-      .notes {
+      .notesTile {
+        font-size: calc(min(3.5vw, 4vh));
       }
 
       body.flip .heading {

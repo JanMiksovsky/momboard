@@ -62,7 +62,7 @@ function render(state, changed) {
   const disableControls = names.length === 0;
   nameSelect.disabled = disableControls;
   messageTextarea.disabled = disableControls;
-  spokeInput.disabled = disableControls;
+  spokeInput.disabled = disableControls || selectedName === "Notes";
 
   if (changed.updates || changed.selectedName) {
     const name = selectedName || names[0];
