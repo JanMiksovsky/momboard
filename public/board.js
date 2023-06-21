@@ -3,6 +3,7 @@ import updateState from "./updateState.js";
 
 const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
+const notesName = "Notes";
 
 let state = {
   error: null,
@@ -13,6 +14,14 @@ let state = {
 };
 
 let refreshTimeout;
+
+function formatNotes(notes) {
+  // Convert **bold** to <strong>bold</strong>.
+  const bolded = notes.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  // Convert newlines to <br> tags.
+  const lineBreaks = bolded.replace(/\n/g, "<br>");
+  return lineBreaks;
+}
 
 async function refresh() {
   const data = await dataFetch();
@@ -69,11 +78,13 @@ function render(state, changed) {
   if (changed.updates) {
     if (state.updates) {
       const { error, updates } = state;
-      let keys = Object.keys(updates);
-      shuffle(keys);
-      keys = keys.slice(0, 4);
-      const tileFragments = keys.map((key) =>
-        renderMessageTile(key, updates[key])
+      let entries = Object.entries(updates);
+      shuffle(entries);
+      entries = entries.slice(0, 4);
+      const tileFragments = entries.map(([key, value]) =>
+        key === notesName
+          ? renderNotesTile(value)
+          : renderMessageTile(key, value)
       );
       tiles.innerHTML = tileFragments.join("\n");
     } else {
@@ -101,6 +112,16 @@ function renderMessageTile(name, data) {
     </span>
     ${spokeSpan}
   </div>
+  </div>
+</div>`;
+}
+
+function renderNotesTile(data) {
+  const notes = formatNotes(data?.message ?? "");
+  return `<div class="tile">
+    <max-font-size class="notes">
+      ${notes}
+    </max-font-size>
   </div>
 </div>`;
 }
