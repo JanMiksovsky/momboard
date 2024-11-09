@@ -125,6 +125,16 @@ function setState(changes) {
   render(state, changed);
 }
 
+function setToday() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const today = `${year}-${month}-${day}`;
+  spokeInput.value = today;
+  setState({ dirty: true });
+}
+
 window.addEventListener("load", async () => {
   nameSelect.addEventListener("change", () => {
     setState({
@@ -136,6 +146,9 @@ window.addEventListener("load", async () => {
   });
   spokeInput.addEventListener("input", () => {
     setState({ dirty: true, saveSuccessful: false });
+  });
+  todayButton.addEventListener("click", () => {
+    setToday();
   });
   saveButton.addEventListener("click", async () => {
     await save();
