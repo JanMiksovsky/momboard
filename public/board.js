@@ -3,7 +3,7 @@ import updateState from "./updateState.js";
 
 const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
-const notesName = "Notes";
+const people = ["Chris", "Jan", "Skye"];
 
 let state = {
   error: null,
@@ -79,12 +79,13 @@ function render(state, changed) {
     if (state.updates) {
       const { error, updates } = state;
       let entries = Object.entries(updates);
-      shuffle(entries);
-      entries = entries.slice(0, 4);
-      const tileFragments = entries.map(([key, value]) =>
-        key === notesName
-          ? renderNotesTile(value)
-          : renderMessageTile(key, value)
+      const sorted = sortByDate(entries);
+      let recent = sorted.slice(0, 4);
+      shuffle(recent);
+      const tileFragments = recent.map(([key, value]) =>
+        people.includes(key)
+          ? renderMessageTile(key, value)
+          : renderNotesTile(value)
       );
       tiles.innerHTML = tileFragments.join("\n");
     } else {
@@ -129,6 +130,17 @@ function setState(changes) {
   const { newState, changed } = updateState(state, changes);
   state = newState;
   render(state, changed);
+}
+
+// Sort by date, most recent first.
+function sortByDate(entries) {
+  const sorted = entries.slice();
+  sorted.sort(([key1, value1], [key2, value2]) => {
+    const date1 = new Date(value1.spoke);
+    const date2 = new Date(value2.spoke);
+    return date2 - date1;
+  });
+  return sorted;
 }
 
 /*
