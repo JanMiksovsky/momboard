@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>MomBoard</title>
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="icon" href="../MomBoard.png" />
-    <link rel="apple-touch-icon" href="../MomBoard.png" sizes="512x512" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../MomBoard.png">
+    <link rel="apple-touch-icon" href="../MomBoard.png" sizes="512x512">
     <script src="edit.js" type="module"></script>
     <style>
       body {
@@ -66,6 +66,7 @@
       }
 
       #saveButton {
+        grid-column: 1 / span 3;
         padding: 0.5em;
         width: 6em;
       }
@@ -98,8 +99,8 @@
       <select id="nameSelect"></select>
       <label for="messageTextarea" class="columnSpan">Message:</label>
       <textarea id="messageTextarea" rows="4" class="columnSpan"></textarea>
-      <label for="spokeInput">Last spoke:</label>
-      <input type="date" id="spokeInput" />
+      <label id="dateLabel" for="spokeInput"></label>
+      <input type="date" id="spokeInput">
       <button id="todayButton">Today</button>
       <button id="saveButton">Save</button>
     </div>

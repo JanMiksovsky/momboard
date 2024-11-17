@@ -24,6 +24,11 @@ function fieldsToData() {
   };
 }
 
+// The names/keys for notes start with a parenthesis.
+function isKeyForNote(key) {
+  return key?.startsWith("(");
+}
+
 async function load() {
   const data = await dataFetch();
   if (data) {
@@ -73,6 +78,8 @@ function render(state, changed) {
       messageTextarea.value = personUpdates?.message ?? "";
       spokeInput.value = personUpdates?.spoke ?? "";
     }
+
+    dateLabel.textContent = isKeyForNote(name) ? "Updated:" : "Spoke:";
   }
 
   if (disableControls || changed.dirty || changed.saving) {

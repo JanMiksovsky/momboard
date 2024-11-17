@@ -3,7 +3,6 @@ import updateState from "./updateState.js";
 
 const refreshInterval = 5 * 60 * 1000; // 5 minutes
 const noRefresh = location.search.slice(1) === "noRefresh";
-const people = ["Chris", "Jan", "Skye"];
 
 let state = {
   error: null,
@@ -21,6 +20,11 @@ function formatNotes(notes) {
   // Convert newlines to <br> tags.
   const lineBreaks = bolded.replace(/\n/g, "<br>");
   return lineBreaks;
+}
+
+// The names/keys for notes start with a parenthesis.
+function isKeyForNote(key) {
+  return key?.startsWith("(");
 }
 
 async function refresh() {
@@ -83,9 +87,9 @@ function render(state, changed) {
       let recent = sorted.slice(0, 4);
       shuffle(recent);
       const tileFragments = recent.map(([key, value]) =>
-        people.includes(key)
-          ? renderMessageTile(key, value)
-          : renderNotesTile(value)
+        isKeyForNote(key)
+          ? renderNotesTile(value)
+          : renderMessageTile(key, value)
       );
       tiles.innerHTML = tileFragments.join("\n");
     } else {
@@ -136,8 +140,8 @@ function setState(changes) {
 function sortByDate(entries) {
   const sorted = entries.slice();
   sorted.sort(([key1, value1], [key2, value2]) => {
-    const date1 = new Date(value1.spoke);
-    const date2 = new Date(value2.spoke);
+    const date1 = new Date(value1.spoke ?? 0);
+    const date2 = new Date(value2.spoke ?? 0);
     return date2 - date1;
   });
   return sorted;
