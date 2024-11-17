@@ -75,17 +75,17 @@ The service has a free tier that can be used indefinitely for small workloads li
 
 If you want to use a different storage service, update `dataFetch.js` to return an object that looks like the JSON one shown below (the object with `"updates"`). Depending on the service, you may also need to update the `save()` function in `public/edit/edit.js`.
 
-If you want to use JsonStorage, you will need to get three IDs/secrets from the service.
+If you want to use JsonStorage, you will need to get three IDs/secrets from the JsonStorage service.
 
-- appKey
-- userId
-- itemId
+- API key
+- Item ID
+- User ID
 
 These are all strings of letters, numbers, and hyphens.
 
 At the moment, this project does not authenticate users. It requires that the IDs/secrets be made available to the web app in a plain JavaScript file called `secrets.js`. This is not very secure — anyone with access to your deployed website will have write access, so only give that URL to the family members who will be posting messages.
 
-(If you know how to set environment variables on your server, save the secrets in environment variables and use a server-side build script to write those out as `secrets.js` there. I use the script in `build.sh` to do that.)
+(If you know how to set environment variables on your server, save the secrets in environment variables and use a server-side build script to write those out as `secrets.js` there. You can use the script in `build.sh` to do that.)
 
 1. Verify that your copy of the project is private. On GitHub, check the "Repository visibility" section of `https://github.com/<your user name>/<your project name>/settings`.
 2. Create a file in the project's root folder called `.env`. This project's `.gitignore` file will exclude the `.env` file from source control.
@@ -110,7 +110,7 @@ For the user ID and item ID:
 1. In the same app console, click "Items", then "Create".
 2. GIve the item a name ("MomBoard"), this is just to help remember what that item will store.
 3. Leave the "Item Type" as "Content".
-4. In the "Content" field, paste the following:
+4. In the "Content" field, paste the following data as a template:
 
 ```json
 {
@@ -134,8 +134,8 @@ For the user ID and item ID:
 }
 ```
 
-5. Edit the names ("Alice", etc.). Get rid of any sections you don't want, or add new ones. (Only the 4 most recent of these will be shown at a time.)
-6. Leave the "Public" option if you like (it makes testing easier), or turn it off to minimize the chance an outsider would be able to read your messages.
+5. Edit the names ("Alice", etc.). Get rid of any sections you don't want, or add new ones. (Only the 4 most recent of these will be shown at a time.) The names in parentheses will appear as general notes without a name beside them.
+6. Leave the "Public" option on if you like (it makes testing easier), or turn it off to minimize the chance an outsider would be able to read your messages.
 7. Click "Save".
 
 The page will update to show a "Get JSON" URL, which will look like:
@@ -144,7 +144,7 @@ The page will update to show a "Get JSON" URL, which will look like:
 https://api.jsonstorage.net/v1/json/123ab45c-de78-89fg-h01i-j23456789k0l/2m345no6-p789-0q12-3rst-45u678901v2w?apiKey=%your api key%
 ```
 
-The first chunk of letters/numbers/hyphens is your user ID (here, `123ab45c-de78-89fg-h01i-j23456789k0l`). The second chunk (here, `2m345no6-p789-0q12-3rst-45u678901v2w`) is the item ID.
+The first chunk of letters/numbers/hyphens in this URL is your user ID (here, `123ab45c-de78-89fg-h01i-j23456789k0l`). The second chunk (here, `2m345no6-p789-0q12-3rst-45u678901v2w`) is the item ID.
 
 8. Copy the item ID and paste it into `.env` after `JSON_STORAGE_ITEM_ID=`.
 9. Copy the user ID and paste it into `.env` after `JSON_STORAGE_USER_ID=`.
