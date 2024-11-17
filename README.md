@@ -102,8 +102,9 @@ To get an API Key:
 1. Open the app console at https://app.jsonstorage.net.
 2. Click "Api Keys", then "Create".
 3. Give the API key a name. For permissions, check Read and Modify.
-4. Copy the API key from that page and paste that after `JSON_STORAGE_API_KEY=`.
-5. Click Save.
+4. Copy the API key from that page. It will look something like `ab1fcde23-f45g-6789-0123-h45i67jkl89m`.
+5. Paste the API key into the `.env` file after `JSON_STORAGE_API_KEY=`
+6. Click Save.
 
 For the user ID and item ID:
 
@@ -146,9 +147,16 @@ https://api.jsonstorage.net/v1/json/123ab45c-de78-89fg-h01i-j23456789k0l/2m345no
 
 The first chunk of letters/numbers/hyphens in this URL is your user ID (here, `123ab45c-de78-89fg-h01i-j23456789k0l`). The second chunk (here, `2m345no6-p789-0q12-3rst-45u678901v2w`) is the item ID.
 
-8. Copy the item ID and paste it into `.env` after `JSON_STORAGE_ITEM_ID=`.
-9. Copy the user ID and paste it into `.env` after `JSON_STORAGE_USER_ID=`.
-10. Save the `.env` file.
+8. Copy the item ID and paste it into `.env` after `JSON_STORAGE_ITEM_ID=`
+9. Copy the user ID and paste it into `.env` after `JSON_STORAGE_USER_ID=`
+10. Save the `.env` file. It should now look something like:
+
+```
+JSON_STORAGE_API_KEY=ab1fcde23-f45g-6789-0123-h45i67jkl89m
+JSON_STORAGE_ITEM_ID=2m345no6-p789-0q12-3rst-45u678901v2w
+JSON_STORAGE_USER_ID=123ab45c-de78-89fg-h01i-j23456789k0l
+```
+
 11. In the terminal, run the `build.sh` script to generate a local copy of `secrets.js`:
 
 ```console
