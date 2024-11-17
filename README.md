@@ -4,29 +4,7 @@ This repository contains the source code for my 2022 e-ink display project that 
 
 This is not a product, but the possible basis for a do-it-yourself project that you might be able to do. At the moment, that requires some familiarity with programming and web technologies. Depending upon interest, I might be able to reduce those hurdles a bit, but this is just a small side project of mine.
 
-## Our relationship in this open source project
-
-Please read this section if you are thinking of using this project.
-
-Open source projects are messy interpersonal endeavors with the extra challenge of incorporating participants who are often complete strangers. Sadly, it's common among open source projects to see a great deal of terrible interpersonal behavior. None of us should have to accept that.
-
-Before we know each other, you and I owe each other _nothing_ beyond the basic politeness and respect we owe everyone.
-
-- I've made this project's source code available in case it helps people, but I'm not a free resource that exists to serve your needs.
-- I have my own goals, and they are almost certainly at least a little different than yours. To the extent our goals align, we may both benefit; if not, you don't need to use this.
-- What I get out of our relationship: a sense of having helped people, maaaaaybe some idea or bug fix that I'll find useful.
-- What you get out of our relationship: a headstart on your own project, without which you might not be able to meet your goals. You may also receive some assistance from me if I can afford it. If you contribute something back, you get the same sense of having helped people that I get.
-- I will strive to treat you, a complete stranger, with respect.
-- In return, you have to treat me and my time with respect.
-- Bugs are a lousy way to say hello. If you investigate this project and decide to make use of it, please [contact me](https://jan.miksovsky.com/contact.html) and say hello first. I would enjoy hearing about how you are using (or intend to use) this project.
-- If you file a bug and it sounds like a complaint to me, you're just going to make me feel bad, and I will close the bug. No one deserves that kind of grief from strangers.
-- If you file a suggestion, please understand that it is likely harder to implement than you believe, or may conflict with my goals even if it advances yours. I may have my own reasons for not taking the suggestion.
-- If you file a pull request, I will do my best to assess it and, if it aligns with my own goals, accept it. The amount of time you invest in an unsolicited pull request does not determine whether I will accept it. Before investing significant time on a pull request, it's reasonable to check first whether it's likely to be accepted.
-- Your crisis is not my emergency. If you file a bug or pull request and I can't get to it as fast as you want — or possibly ever — that's obviously disappointing but not justification for complaints.
-- This is open source. At any point you're free to fork this project, walk away, and do what you want with it (subject to the [license](LICENSE)).
-- No one is making you use this.
-
-If you can't accept this relationship, please don't use this project.
+If you are thinking of using this project, please read the final section on "Respectful open source participation".
 
 # Overview
 
@@ -171,10 +149,31 @@ You will need to arrange for a copy of `secrets.js` to be created on the server.
 
 After you've confirmed that your deployed web app works as expected, you can try running it on the hardware device. The Note Air2 display I chose has a user setting to run an app at startup, so I was able to have it run the device's web browser. I was then able to set the web browser's home page to be the MomBoard web app. With that, rebooting the display would cause it to run the web app.
 
-# Contributing
+# Adapting
 
 Given the highly personal nature of this project, it's closer to a (long, complicated) recipe for a home-cooked meal than a finished product.
 
 If there's interest I could try to further separate the general from the personal, but it's a little hard to see how to best separate the things I need from what others need. As mentioned in the blog post at the top, by design I tried to avoid the use of any external dependencies to minimize the chance for unexpected failures that I couldn't debug remotely. But to the extent this app gets generalized and shared, it becomes a potentially fallible dependency for everyone using it.
 
 In the spirit of treating this like a recipe, it might be productive to think about sharing the modifications you made to the recipe — things you did to adapt the project to your own needs, improvements you made that you think other people might want to try, etc.
+
+## Respectful open source participation
+
+Open source projects are messy interpersonal endeavors with the extra challenge of incorporating participants who are often complete strangers. Sadly, it's common among open source projects to see a great deal of terrible interpersonal behavior. None of us should have to accept that.
+
+Before we know each other, you and I owe each other _nothing_ beyond the basic politeness and respect we owe everyone.
+
+- I've made this project's source code available in case it helps people, but I'm not a free resource that exists to serve your needs.
+- I have my own goals, and they are almost certainly at least a little different than yours. To the extent our goals align, we may both benefit; if not, you don't need to use this.
+- What I get out of our relationship: a sense of having helped people, maaaaaybe some idea or bug fix that I'll find useful.
+- What you get out of our relationship: a headstart on your own project, without which you might not be able to meet your goals. You may also receive some assistance from me if I can afford it. If you contribute something back, you get the same sense of having helped people that I get.
+- I will strive to treat you, a complete stranger, with respect.
+- In return, you have to treat me and my time with respect.
+- Bugs are a lousy way to say hello. If you investigate this project and decide to make use of it, please [contact me](https://jan.miksovsky.com/contact.html) and say hello first. I would enjoy hearing about how you are using (or intend to use) this project.
+- If you file a bug and it sounds like a complaint to me, you're just going to make me feel bad, and I will close the bug. No one deserves that kind of grief from strangers.
+- If you file a suggestion, please understand that it is likely harder to implement than you believe, or may conflict with my goals even if it advances yours. I may have my own reasons for not taking the suggestion.
+- If you file a pull request, I will do my best to assess it and, if it aligns with my own goals, accept it. The amount of time you invest in an unsolicited pull request does not determine whether I will accept it. Before investing significant time on a pull request, it's reasonable to check first whether it's likely to be accepted.
+- Your crisis is not my emergency. If you file a bug or pull request and I can't get to it as fast as you want — or possibly ever — that's obviously disappointing but not justification for complaints.
+- This is open source. At any point you're free to fork this project, walk away, and do what you want with it (subject to the [license](LICENSE)). Or use something else. No one is making you use this.
+
+If you can't accept this relationship, please don't use this project.

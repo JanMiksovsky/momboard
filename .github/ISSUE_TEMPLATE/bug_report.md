@@ -6,7 +6,7 @@ labels: ""
 assignees: ""
 ---
 
-**Bugs are a lousy way to say hello.** If you haven't already done so, please read the "Our relationship in this open source project" section of the project README, then introduce yourself to [Jan Miksovsky](https://jan.miksovsky.com/contact.html) and say hello first!
+**Bugs are a lousy way to say hello.** If you haven't already done so, please read the "Respectful open source participation" section of the project README, then introduce yourself to [Jan Miksovsky](https://jan.miksovsky.com/contact.html) and say hello first!
 
 Begin with a clear and concise description of the bug.
 
