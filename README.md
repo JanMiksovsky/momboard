@@ -65,7 +65,7 @@ If you want to inspect the running web page in the browser, it can be helpful to
 - To work on the home page, add `?noReload` to the URL to suppress reload and refresh.
 - To work on the board page, add `?noRefresh` to the URL to suppress refresh.
 
-I tried to avoid JavaScript frameworks and libraries for this project to keep it minimal and hopefully reliable. To deal with data and page state, both the `board.js` and `edit.js` pages use a copy of the minimalist [update-state](https://github.com/JanMiksovsky/update-state) state engine I created for projects like this. This gives me 90% of what I like about reactive programming models for %1 of the cost.
+I tried to avoid JavaScript frameworks and libraries for this project to keep it minimal and hopefully reliable. To deal with data and page state, both the `board.js` and `edit.js` pages use a copy of the minimalist [update-state](https://github.com/JanMiksovsky/update-state) state engine I created for projects like this. This gives me 90% of what I like about reactive programming models like React for %0.1 of the cost.
 
 # Storage service
 
@@ -83,18 +83,19 @@ If you want to use JsonStorage, you will need to get three IDs/secrets from the 
 
 These are all strings of letters, numbers, and hyphens.
 
-At the moment, the way this project is configured requires saving confidential secrets in the source code. If you push your copy of the code to GitHub, **keep the project private** so that other people do not end up with read/write access to your messages. (Alternatively: rewrite the code to use other techniques, such as environment variables, to store the secrets.)
+At the moment, this project does not authenticate users. It requires that the IDs/secrets be made available to the web app in a plain JavaScript file called `secrets.js`. This is not very secure — anyone with access to your deployed website will have write access, so only give that URL to the family members who will be posting messages.
+
+(If you know how to set environment variables on your server, save the secrets in environment variables and use a server-side build script to write those out as `secrets.js` there. I use the script in `build.sh` to do that.)
 
 1. Verify that your copy of the project is private. On GitHub, check the "Repository visibility" section of `https://github.com/<your user name>/<your project name>/settings`.
-2. Create a file in the `src` folder called `secrets.js`.
-3. Paste the following into `secrets.js`:
+2. Create a file in the project's root folder called `.env`. This project's `.gitignore` file will exclude the `.env` file from source control.
+3. Paste the following into `.env`:
 
-```js
-export default {
-  userId: "",
-  apiKey: "",
-  itemId: "",
-};
+```
+JSON_STORAGE_API_KEY=
+JSON_STORAGE_ITEM_ID=
+JSON_STORAGE_USER_ID=
+
 ```
 
 To get an API Key:
@@ -102,7 +103,7 @@ To get an API Key:
 1. Open the app console at https://app.jsonstorage.net.
 2. Click "Api Keys", then "Create".
 3. Give the API key a name. For permissions, check Read and Modify.
-4. Copy the API key from that page and save it in `secrets.js` as the `apiKey`.
+4. Copy the API key from that page and paste that after `JSON_STORAGE_API_KEY=`.
 5. Click Save.
 
 For the user ID and item ID:
@@ -146,18 +147,27 @@ https://api.jsonstorage.net/v1/json/123ab45c-de78-89fg-h01i-j23456789k0l/2m345no
 
 The first chunk of letters/numbers/hyphens is your user ID (here, `123ab45c-de78-89fg-h01i-j23456789k0l`). The second chunk (here, `2m345no6-p789-0q12-3rst-45u678901v2w`) is the item ID.
 
-8. Copy the user ID and paste it into `secrets.js` as the `userId`.
-9. Copy the item ID and paste it into `secrets.js` as the `itemId`.
-10. Save `secrets.js`.
+8. Copy the item ID and paste it into `.env` after `JSON_STORAGE_ITEM_ID=`.
+9. Copy the user ID and paste it into `.env` after `JSON_STORAGE_USER_ID=`.
+10. Save the `.env` file.
+11. In the terminal, run the `build.sh` script to generate a local copy of `secrets.js`:
+
+```console
+$ ./build.sh
+```
 
 # Deploying
 
 Once you've arranged for some storage service (JsonStorage or something you set up yourself), you'll need to deploy the web app on a public web server. The web app itself is only static HTML, CSS, and JavaScript files, so there are many places you could do that.
 
-After you've confirmed that your deployed web app works as expected, you can try running it on your device. The Note Air2 display I chose has a user setting to run an app at startup, so I was able to have it run the device's web browser. I was then able to set the web browser's home page to be the MomBoard web app. With that, rebooting the display would cause it to run the web app.
+You will need to arrange for a copy of `secrets.js` to be created on the server. Depending on your web server, you may be able to copy your local copy of `secrets.js` up to the server. Alternatively, you set environment variables on the server and then arrange to run the `build.sh` script on the server to generate `secrets.js` there.
+
+After you've confirmed that your deployed web app works as expected, you can try running it on the hardware device. The Note Air2 display I chose has a user setting to run an app at startup, so I was able to have it run the device's web browser. I was then able to set the web browser's home page to be the MomBoard web app. With that, rebooting the display would cause it to run the web app.
 
 # Contributing
 
-Given the highly personal nature of this project, it's a little hard to see how to best separate the things I need from what others need. Moreover, as mentioned in the blog post at the top, by design I tried to avoid the use of any external dependencies to minimize the chance for unexpected failures that I couldn't debug remotely. This leads to a paradox: to the extent this app gets generalized, the general-purpose app runs the risk of becoming a dependency for everyone using it.
+Given the highly personal nature of this project, it's closer to a (long, complicated) recipe for a home-cooked meal than a finished product.
 
-That said, depending on expressions of interest I could try to further separate the general from the personal.
+If there's interest I could try to further separate the general from the personal, but it's a little hard to see how to best separate the things I need from what others need. As mentioned in the blog post at the top, by design I tried to avoid the use of any external dependencies to minimize the chance for unexpected failures that I couldn't debug remotely. But to the extent this app gets generalized and shared, it becomes a potentially fallible dependency for everyone using it.
+
+In the spirit of treating this like a recipe, it might be productive to think about sharing the modifications you made to the recipe — things you did to adapt the project to your own needs, improvements you made that you think other people might want to try, etc.

@@ -1,5 +1,7 @@
-# This "build" script only writes some environment variables to
-# `public/secrets.js` so the JavaScript files can read them.
+# This "build" script writes some environment variables to `public/secrets.js`
+# so the JavaScript files can read them.
+
+source .env
 
 echo "/* App secrets */" > public/secrets.js
 echo "export const apiKey = \"$JSON_STORAGE_API_KEY\";" >> public/secrets.js
