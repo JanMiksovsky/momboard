@@ -95,7 +95,6 @@ At the moment, this project does not authenticate users. It requires that the ID
 JSON_STORAGE_API_KEY=
 JSON_STORAGE_ITEM_ID=
 JSON_STORAGE_USER_ID=
-
 ```
 
 To get an API Key:
