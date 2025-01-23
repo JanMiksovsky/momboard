@@ -156,7 +156,12 @@ Once you've arranged for some storage service (JsonStorage or something you set 
 
 You will need to arrange for a copy of `secrets.js` to be created on the server. Depending on your web server, you may be able to copy your local copy of `secrets.js` up to the server. Alternatively, you set environment variables on the server and then arrange to run the `build.sh` script on the server to generate `secrets.js` there.
 
-After you've confirmed that your deployed web app works as expected, you can try running it on the hardware device. The Note Air2 display I chose has a user setting to run an app at startup, so I was able to have it run the device's web browser. I was then able to set the web browser's home page to be the MomBoard web app. With that, rebooting the display would cause it to run the web app.
+After you've confirmed that your deployed web app works as expected, you can try browsing to it on the hardware device.
+
+Assuming the web page looks as you expect, you'll probably want to arrange to have the device automatically open that page on startup. For the Boox Note Air2 device, this entails two steps:
+
+1. **Save the page as a web app.** In the browser, open the menu of commands (the menu button may have a ☰ icon) and select "Add to Home screen". This will add the page to your device's home screen as an application.
+2. **Arrange to have the web app launched at device startup.** This was straightforward in 2023 but, as of January 2025, Boox appears to have changed their UI and I can't figure out how to do this anymore. I believe the general area you want is to open Apps, then click the ☰ button for a menu of options. Pick "App Management" and then "Auto-Start Settings". I believe that screen used to let you specify that you want to run your web app on startup, but for me it now shows a blank screen.
 
 # Adapting
 
